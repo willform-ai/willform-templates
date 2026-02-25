@@ -16,19 +16,16 @@ Copy a prompt, paste it into your AI agent (Claude Desktop, ChatGPT, etc.), and 
 
 | Template | Description | Languages |
 |----------|-------------|-----------|
-| [OpenClaw Investment Researcher](./templates/openclaw-investment-researcher/) | AI-powered investment research chatbot with Telegram integration | [한국어](./templates/openclaw-investment-researcher/prompt-ko.md) · [English](./templates/openclaw-investment-researcher/prompt-en.md) |
+| [OpenClaw Investment Researcher](./templates/openclaw-investment-researcher.en.md) | AI chatbot on Telegram for stocks, ETFs, crypto, and market analysis | [한국어](./templates/openclaw-investment-researcher.ko.md) · [English](./templates/openclaw-investment-researcher.en.md) |
 
 ## Contributing
 
 1. Fork this repo
-2. Add your template under `templates/{your-template-name}/`
-3. Include at least one `prompt-en.md` (English) file
+2. Copy [`TEMPLATE.md`](./TEMPLATE.md) as a starting point
+3. Add your template as `templates/{name}.en.md` (Korean: `{name}.ko.md`)
 4. Open a Pull Request
 
-Each template directory should contain:
-- `prompt-en.md` — English version (required)
-- `prompt-ko.md` — Korean version (optional)
-- Additional language files follow the `prompt-{lang}.md` pattern
+File naming: `{template-name}.{lang}.md` — e.g. `my-app.en.md`, `my-app.ko.md`
 
 ## Browse Online
 

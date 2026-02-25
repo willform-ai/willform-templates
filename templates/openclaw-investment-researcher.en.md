@@ -1,17 +1,25 @@
 # OpenClaw Investment Researcher Agent
 
-Deploy an AI-powered investment research chatbot on Willform with Telegram integration.
+Deploy an AI chatbot on Telegram that answers questions about stocks, ETFs, crypto, and market analysis.
+
+## What You Get
+
+- An OpenClaw AI chatbot running on Willform cloud
+- Telegram DM integration for conversing with the bot
+- Web-based Control UI for managing the chatbot
+- Real-time market data via web search tools
+- Persistent memory that saves conversation history and user preferences
 
 ## Prerequisites
 
-Replace the 4 placeholder values below with your own, then paste the entire prompt into your AI agent.
+Replace the 4 placeholder values below with your own before pasting the prompt.
 
-| Variable | Where to get it | Example format |
+| Variable | How to get it | Purpose |
 |---|---|---|
-| `YOUR_ANTHROPIC_API_KEY` | https://console.anthropic.com/settings/keys | `sk-ant-api03-...` |
-| `YOUR_TELEGRAM_BOT_TOKEN` | Telegram → @BotFather → /newbot | `1234567890:AAG...` |
-| `YOUR_TELEGRAM_USER_ID` | Telegram → send any message to @userinfobot → numeric ID | `8514287619` |
-| `YOUR_GATEWAY_TOKEN` | Any password you choose | `my-secret-123` |
+| `YOUR_ANTHROPIC_API_KEY` | Create an API key at [Anthropic Console](https://console.anthropic.com/settings/keys) | Powers LLM inference for the chatbot |
+| `YOUR_TELEGRAM_BOT_TOKEN` | Send `/newbot` to [@BotFather](https://t.me/BotFather) on Telegram | Connects the bot to Telegram |
+| `YOUR_TELEGRAM_USER_ID` | Send any message to [@userinfobot](https://t.me/userinfobot) on Telegram → get your numeric ID | Adds you to the DM allowlist |
+| `YOUR_GATEWAY_TOKEN` | Choose any password (e.g. `my-secret-123`) | Authenticates access to the web Control UI |
 
 ## Prompt
 

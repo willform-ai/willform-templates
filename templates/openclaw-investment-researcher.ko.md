@@ -1,17 +1,25 @@
 # OpenClaw 투자 리서처 에이전트
 
-텔레그램으로 소통하는 AI 투자 리서처 챗봇을 Willform에 배포합니다.
+텔레그램에서 주식, ETF, 암호화폐 등 투자 관련 질문에 답하는 AI 리서처 챗봇을 배포합니다.
+
+## 배포 결과
+
+- OpenClaw 기반 AI 챗봇이 Willform 클라우드에서 실행됩니다
+- 텔레그램 DM으로 챗봇과 대화할 수 있습니다
+- 웹 브라우저에서 Control UI로 챗봇을 관리할 수 있습니다
+- 챗봇은 웹 검색을 통해 실시간 시장 데이터를 조회합니다
+- 대화 내역과 사용자 선호도가 자동으로 메모리에 저장됩니다
 
 ## 사전 준비
 
 아래 4개의 값을 본인 것으로 교체한 뒤, 프롬프트 전체를 AI 에이전트에 붙여넣으세요.
 
-| 변수 | 어디서 발급? | 예시 형태 |
+| 변수 | 발급 방법 | 용도 |
 |---|---|---|
-| `YOUR_ANTHROPIC_API_KEY` | https://console.anthropic.com/settings/keys | `sk-ant-api03-...` |
-| `YOUR_TELEGRAM_BOT_TOKEN` | Telegram에서 @BotFather → /newbot | `1234567890:AAG...` |
-| `YOUR_TELEGRAM_USER_ID` | Telegram에서 @userinfobot에게 아무 메시지 → 숫자 ID | `8514287619` |
-| `YOUR_GATEWAY_TOKEN` | 아무 비밀번호 (본인이 정하면 됨) | `my-secret-123` |
+| `YOUR_ANTHROPIC_API_KEY` | [Anthropic Console](https://console.anthropic.com/settings/keys)에서 API 키 생성 | 챗봇의 LLM 추론에 사용 |
+| `YOUR_TELEGRAM_BOT_TOKEN` | Telegram에서 [@BotFather](https://t.me/BotFather)에게 `/newbot` 명령 | 텔레그램 봇 연결 |
+| `YOUR_TELEGRAM_USER_ID` | Telegram에서 [@userinfobot](https://t.me/userinfobot)에게 아무 메시지 전송 → 숫자 ID 확인 | DM 허용 목록에 본인 등록 |
+| `YOUR_GATEWAY_TOKEN` | 직접 정하는 비밀번호 (예: `my-secret-123`) | 웹 Control UI 접속 인증 |
 
 ## 프롬프트
 
