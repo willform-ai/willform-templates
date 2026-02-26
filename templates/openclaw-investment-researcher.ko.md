@@ -44,17 +44,22 @@ OpenClaw AI 에이전트를 배포해주세요.
     ANTHROPIC_API_KEY: "YOUR_ANTHROPIC_API_KEY"
     TELEGRAM_BOT_TOKEN: "YOUR_TELEGRAM_BOT_TOKEN"
     OPENCLAW_GATEWAY_TOKEN: "YOUR_GATEWAY_TOKEN"
+    OPENCLAW_DOMAIN: (expose 후 설정 — 아래 안내 참조)
 
 시작 커맨드 (sh -c):
 
-1) openclaw.json 작성:
-cat > /home/node/.openclaw/openclaw.json << 'OCJSON'
+1) openclaw.json 작성 (주의: $OPENCLAW_DOMAIN 변수 확장을 위해 unquoted heredoc 사용):
+cat > /home/node/.openclaw/openclaw.json << OCJSON
 {
   "gateway": {
     "mode": "local",
     "bind": "loopback",
     "port": 18790,
-    "controlUi": { "enabled": true, "dangerouslyDisableDeviceAuth": true },
+    "controlUi": {
+      "enabled": true,
+      "dangerouslyDisableDeviceAuth": true,
+      "allowedOrigins": ["https://${OPENCLAW_DOMAIN:-localhost}"]
+    },
     "auth": { "mode": "token" }
   },
   "channels": {
@@ -113,7 +118,7 @@ cat > /home/node/.openclaw/workspace/AGENTS.md << 'EOF'
 - 어떤 언어로 질문받아도 반드시 한국어로 응답
 EOF
 
-5) HTTP 리버스 프록시 작성 후 백그라운드 실행 (Cloudflare 헤더 제거 + Host/Origin localhost rewrite):
+5) HTTP 리버스 프록시 작성 후 백그라운드 실행 (Cloudflare 헤더만 제거 — Host/Origin 재작성 금지):
 cat > /home/node/.openclaw/proxy.js << 'PROXYJS'
 const http = require('http');
 const net = require('net');
@@ -122,12 +127,9 @@ const STRIP = [
   'cf-connecting-ip', 'cf-ray', 'cf-visitor',
   'cf-ipcountry', 'cdn-loop', 'cf-worker'
 ];
-const LOCAL = '127.0.0.1:18790';
 
 const server = http.createServer((req, res) => {
   STRIP.forEach(k => delete req.headers[k]);
-  req.headers.host = LOCAL;
-  if (req.headers.origin) req.headers.origin = 'http://' + LOCAL;
   const proxy = http.request({
     hostname: '127.0.0.1', port: 18790,
     path: req.url, method: req.method, headers: req.headers
@@ -141,8 +143,6 @@ const server = http.createServer((req, res) => {
 
 server.on('upgrade', (req, socket, head) => {
   STRIP.forEach(k => delete req.headers[k]);
-  req.headers.host = LOCAL;
-  if (req.headers.origin) req.headers.origin = 'http://' + LOCAL;
   const upstream = net.connect(18790, '127.0.0.1', () => {
     let raw = req.method + ' ' + req.url + ' HTTP/1.1\r\n';
     for (const [k, v] of Object.entries(req.headers)) {
@@ -165,6 +165,8 @@ node /home/node/.openclaw/proxy.js &
 6) 게이트웨이 실행:
 exec node dist/index.js gateway --allow-unconfigured
 
-배포 후 도메인 노출하고, 첫 접속은:
-https://{도메인}/?token={YOUR_GATEWAY_TOKEN}
+배포 후:
+1. 도메인 노출 (POST /api/deploy/{id}/expose) → {도메인} 반환
+2. 환경변수 업데이트: OPENCLAW_DOMAIN={도메인} (재시작 트리거, allowedOrigins 적용)
+3. 첫 접속: https://{도메인}/?token={YOUR_GATEWAY_TOKEN}
 ```

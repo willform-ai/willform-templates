@@ -44,17 +44,22 @@ Environment variables:
     ANTHROPIC_API_KEY: "YOUR_ANTHROPIC_API_KEY"
     TELEGRAM_BOT_TOKEN: "YOUR_TELEGRAM_BOT_TOKEN"
     OPENCLAW_GATEWAY_TOKEN: "YOUR_GATEWAY_TOKEN"
+    OPENCLAW_DOMAIN: (set after expose — see instructions below)
 
 Startup command (sh -c):
 
-1) Write openclaw.json:
-cat > /home/node/.openclaw/openclaw.json << 'OCJSON'
+1) Write openclaw.json (note: unquoted heredoc so $OPENCLAW_DOMAIN expands):
+cat > /home/node/.openclaw/openclaw.json << OCJSON
 {
   "gateway": {
     "mode": "local",
     "bind": "loopback",
     "port": 18790,
-    "controlUi": { "enabled": true, "dangerouslyDisableDeviceAuth": true },
+    "controlUi": {
+      "enabled": true,
+      "dangerouslyDisableDeviceAuth": true,
+      "allowedOrigins": ["https://${OPENCLAW_DOMAIN:-localhost}"]
+    },
     "auth": { "mode": "token" }
   },
   "channels": {
@@ -113,7 +118,7 @@ cat > /home/node/.openclaw/workspace/AGENTS.md << 'EOF'
 - Always respond in English regardless of the language of the question
 EOF
 
-5) Write HTTP reverse proxy and run in background (strips Cloudflare headers + rewrites Host/Origin to localhost):
+5) Write HTTP reverse proxy and run in background (strips Cloudflare headers only — do NOT rewrite Host/Origin):
 cat > /home/node/.openclaw/proxy.js << 'PROXYJS'
 const http = require('http');
 const net = require('net');
@@ -122,12 +127,9 @@ const STRIP = [
   'cf-connecting-ip', 'cf-ray', 'cf-visitor',
   'cf-ipcountry', 'cdn-loop', 'cf-worker'
 ];
-const LOCAL = '127.0.0.1:18790';
 
 const server = http.createServer((req, res) => {
   STRIP.forEach(k => delete req.headers[k]);
-  req.headers.host = LOCAL;
-  if (req.headers.origin) req.headers.origin = 'http://' + LOCAL;
   const proxy = http.request({
     hostname: '127.0.0.1', port: 18790,
     path: req.url, method: req.method, headers: req.headers
@@ -141,8 +143,6 @@ const server = http.createServer((req, res) => {
 
 server.on('upgrade', (req, socket, head) => {
   STRIP.forEach(k => delete req.headers[k]);
-  req.headers.host = LOCAL;
-  if (req.headers.origin) req.headers.origin = 'http://' + LOCAL;
   const upstream = net.connect(18790, '127.0.0.1', () => {
     let raw = req.method + ' ' + req.url + ' HTTP/1.1\r\n';
     for (const [k, v] of Object.entries(req.headers)) {
@@ -165,6 +165,8 @@ node /home/node/.openclaw/proxy.js &
 6) Start the gateway:
 exec node dist/index.js gateway --allow-unconfigured
 
-After deployment, expose the domain. First access:
-https://{domain}/?token={YOUR_GATEWAY_TOKEN}
+After deployment:
+1. Expose the domain (POST /api/deploy/{id}/expose) → returns {domain}
+2. Update env: set OPENCLAW_DOMAIN={domain} (this triggers a restart with the correct allowedOrigins)
+3. First access: https://{domain}/?token={YOUR_GATEWAY_TOKEN}
 ```
