@@ -1,3 +1,8 @@
+---
+category: ai-agent
+tags: [openclaw, telegram, ai, finance]
+---
+
 # OpenClaw 투자 리서처 에이전트
 
 텔레그램에서 주식, ETF, 암호화폐 등 투자 관련 질문에 답하는 AI 리서처 챗봇을 배포합니다.

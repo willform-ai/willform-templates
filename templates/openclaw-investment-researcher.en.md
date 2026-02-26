@@ -1,3 +1,8 @@
+---
+category: ai-agent
+tags: [openclaw, telegram, ai, finance]
+---
+
 # OpenClaw Investment Researcher Agent
 
 Deploy an AI chatbot on Telegram that answers questions about stocks, ETFs, crypto, and market analysis.
