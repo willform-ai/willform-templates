@@ -170,3 +170,145 @@ exec node dist/index.js gateway --allow-unconfigured
 2. 환경변수 업데이트: OPENCLAW_DOMAIN={도메인} (재시작 트리거, allowedOrigins 적용)
 3. 첫 접속: https://{도메인}/?token={YOUR_GATEWAY_TOKEN}
 ```
+
+## Deploy Config
+
+```json
+{
+  "name": "openclaw",
+  "image": "ghcr.io/openclaw/openclaw:2026.2.23",
+  "chartType": "web",
+  "port": 18789,
+  "replicas": 1,
+  "volumeSizeGb": 8,
+  "volumeMountPath": "/home/node/.openclaw",
+  "healthCheckPath": null,
+  "env": {
+    "ANTHROPIC_API_KEY": "YOUR_ANTHROPIC_API_KEY",
+    "TELEGRAM_BOT_TOKEN": "YOUR_TELEGRAM_BOT_TOKEN",
+    "OPENCLAW_GATEWAY_TOKEN": "YOUR_GATEWAY_TOKEN",
+    "OPENCLAW_DOMAIN": ""
+  },
+  "command": ["sh", "-c"],
+  "expose": true,
+  "exposeProtocol": "http",
+  "postExposeEnv": {
+    "OPENCLAW_DOMAIN": "$DOMAIN"
+  }
+}
+```
+
+## Startup Script
+
+```bash
+cat > /home/node/.openclaw/openclaw.json << OCJSON
+{
+  "gateway": {
+    "mode": "local",
+    "bind": "loopback",
+    "port": 18790,
+    "controlUi": {
+      "enabled": true,
+      "dangerouslyDisableDeviceAuth": true,
+      "allowedOrigins": ["https://${OPENCLAW_DOMAIN:-localhost}"]
+    },
+    "auth": { "mode": "token" }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "allowlist",
+      "allowFrom": ["tg:YOUR_TELEGRAM_USER_ID"]
+    }
+  },
+  "agents": {
+    "defaults": { "sandbox": { "mode": "off" } }
+  },
+  "tools": {
+    "web": { "search": { "enabled": true }, "fetch": { "enabled": true } },
+    "sandbox": {
+      "tools": {
+        "allow": ["exec","process","read","write","edit","sessions_list","sessions_history","sessions_send","sessions_spawn","session_status","browser","canvas","nodes","cron","gateway","web_search","web_fetch"],
+        "deny": []
+      }
+    }
+  },
+  "plugins": {
+    "entries": {
+      "telegram": { "enabled": true }
+    }
+  }
+}
+OCJSON
+
+cat > /home/node/.openclaw/workspace/IDENTITY.md << 'EOF'
+# 상승이
+📊
+투자 전문 AI 리서처
+EOF
+
+cat > /home/node/.openclaw/workspace/SOUL.md << 'EOF'
+# 상승이 — 투자 전문 리서처
+나는 상승이, 투자 전문 AI 리서처다.
+모든 응답은 반드시 한국어로 작성한다. 존댓말을 사용한다.
+전문 분야: 주식, ETF, 채권, 암호화폐, 매크로 경제, 섹터 분석, 포트폴리오 전략.
+데이터 기반 분석을 우선하고, 출처를 반드시 명시한다.
+투자 수익을 보장하거나 특정 종목을 매수/매도 추천하지 않는다.
+최종 투자 판단은 사용자 본인의 책임임을 안내한다.
+EOF
+
+cat > /home/node/.openclaw/workspace/AGENTS.md << 'EOF'
+# Agent 행동 규칙
+- 매 응답 전 SOUL.md 참조
+- 세션마다 memory 파일 로드
+- 분석 요청 시 근거 데이터와 출처 필수 포함
+- 유저 투자성향/관심종목/포트폴리오 memory에 저장
+- 그룹챗에서 개인 포트폴리오 정보 공유 금지
+- 어떤 언어로 질문받아도 반드시 한국어로 응답
+EOF
+
+cat > /home/node/.openclaw/proxy.js << 'PROXYJS'
+const http = require('http');
+const net = require('net');
+const STRIP = [
+  'x-forwarded-for', 'x-forwarded-proto', 'x-real-ip',
+  'cf-connecting-ip', 'cf-ray', 'cf-visitor',
+  'cf-ipcountry', 'cdn-loop', 'cf-worker'
+];
+
+const server = http.createServer((req, res) => {
+  STRIP.forEach(k => delete req.headers[k]);
+  const proxy = http.request({
+    hostname: '127.0.0.1', port: 18790,
+    path: req.url, method: req.method, headers: req.headers
+  }, upstream => {
+    res.writeHead(upstream.statusCode, upstream.headers);
+    upstream.pipe(res);
+  });
+  req.pipe(proxy);
+  proxy.on('error', () => res.destroy());
+});
+
+server.on('upgrade', (req, socket, head) => {
+  STRIP.forEach(k => delete req.headers[k]);
+  const upstream = net.connect(18790, '127.0.0.1', () => {
+    let raw = req.method + ' ' + req.url + ' HTTP/1.1\r\n';
+    for (const [k, v] of Object.entries(req.headers)) {
+      raw += k + ': ' + v + '\r\n';
+    }
+    raw += '\r\n';
+    upstream.write(raw);
+    if (head.length) upstream.write(head);
+    socket.pipe(upstream);
+    upstream.pipe(socket);
+  });
+  upstream.on('error', () => socket.destroy());
+  socket.on('error', () => upstream.destroy());
+});
+
+server.listen(18789, '0.0.0.0');
+PROXYJS
+node /home/node/.openclaw/proxy.js &
+
+exec node dist/index.js gateway --allow-unconfigured
+```

@@ -209,3 +209,131 @@ After deployment:
 2. Update env: set OPENCLAW_DOMAIN={domain} (this triggers a restart with the correct allowedOrigins)
 3. First access: https://{domain}/?token={YOUR_GATEWAY_TOKEN}
 ```
+
+## Deploy Config
+
+```json
+{
+  "name": "openclaw",
+  "image": "ghcr.io/openclaw/openclaw:2026.2.23",
+  "chartType": "web",
+  "port": 18789,
+  "replicas": 1,
+  "volumeSizeGb": 8,
+  "volumeMountPath": "/home/node/.openclaw",
+  "healthCheckPath": null,
+  "env": {
+    "ANTHROPIC_API_KEY": "YOUR_ANTHROPIC_API_KEY",
+    "TELEGRAM_BOT_TOKEN": "YOUR_TELEGRAM_BOT_TOKEN",
+    "OPENCLAW_GATEWAY_TOKEN": "YOUR_GATEWAY_TOKEN",
+    "OPENCLAW_DOMAIN": ""
+  },
+  "command": ["sh", "-c"],
+  "expose": true,
+  "exposeProtocol": "http",
+  "postExposeEnv": {
+    "OPENCLAW_DOMAIN": "$DOMAIN"
+  }
+}
+```
+
+## Startup Script
+
+```bash
+cat > /home/node/.openclaw/openclaw.json << OCJSON
+{
+  "gateway": {
+    "mode": "local",
+    "bind": "loopback",
+    "port": 18790,
+    "controlUi": {
+      "enabled": true,
+      "dangerouslyDisableDeviceAuth": true,
+      "allowedOrigins": ["https://${OPENCLAW_DOMAIN:-localhost}"]
+    },
+    "auth": { "mode": "token" }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "allowlist",
+      "allowFrom": ["tg:YOUR_TELEGRAM_USER_ID"]
+    }
+  },
+  "agents": {
+    "defaults": { "sandbox": { "mode": "off" } }
+  },
+  "tools": {
+    "web": { "search": { "enabled": true }, "fetch": { "enabled": true } },
+    "sandbox": {
+      "tools": {
+        "allow": ["exec","process","read","write","edit","sessions_list","sessions_history","sessions_send","sessions_spawn","session_status","browser","canvas","nodes","cron","gateway","web_search","web_fetch"],
+        "deny": []
+      }
+    }
+  },
+  "plugins": {
+    "entries": {
+      "telegram": { "enabled": true }
+    }
+  }
+}
+OCJSON
+
+cat > /home/node/.openclaw/workspace/IDENTITY.md << 'EOF'
+YOUR_IDENTITY_MD
+EOF
+
+cat > /home/node/.openclaw/workspace/SOUL.md << 'EOF'
+YOUR_SOUL_MD
+EOF
+
+cat > /home/node/.openclaw/workspace/AGENTS.md << 'EOF'
+YOUR_AGENTS_MD
+EOF
+
+cat > /home/node/.openclaw/proxy.js << 'PROXYJS'
+const http = require('http');
+const net = require('net');
+const STRIP = [
+  'x-forwarded-for', 'x-forwarded-proto', 'x-real-ip',
+  'cf-connecting-ip', 'cf-ray', 'cf-visitor',
+  'cf-ipcountry', 'cdn-loop', 'cf-worker'
+];
+
+const server = http.createServer((req, res) => {
+  STRIP.forEach(k => delete req.headers[k]);
+  const proxy = http.request({
+    hostname: '127.0.0.1', port: 18790,
+    path: req.url, method: req.method, headers: req.headers
+  }, upstream => {
+    res.writeHead(upstream.statusCode, upstream.headers);
+    upstream.pipe(res);
+  });
+  req.pipe(proxy);
+  proxy.on('error', () => res.destroy());
+});
+
+server.on('upgrade', (req, socket, head) => {
+  STRIP.forEach(k => delete req.headers[k]);
+  const upstream = net.connect(18790, '127.0.0.1', () => {
+    let raw = req.method + ' ' + req.url + ' HTTP/1.1\r\n';
+    for (const [k, v] of Object.entries(req.headers)) {
+      raw += k + ': ' + v + '\r\n';
+    }
+    raw += '\r\n';
+    upstream.write(raw);
+    if (head.length) upstream.write(head);
+    socket.pipe(upstream);
+    upstream.pipe(socket);
+  });
+  upstream.on('error', () => socket.destroy());
+  socket.on('error', () => upstream.destroy());
+});
+
+server.listen(18789, '0.0.0.0');
+PROXYJS
+node /home/node/.openclaw/proxy.js &
+
+exec node dist/index.js gateway --allow-unconfigured
+```
