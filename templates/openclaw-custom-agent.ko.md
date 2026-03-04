@@ -84,7 +84,7 @@ AI 여행 플래닝 어시스턴트
 ```
 OpenClaw AI 에이전트를 배포해주세요.
 
-이미지: ghcr.io/openclaw/openclaw:2026.2.23
+이미지: alpine/openclaw:2026.2.26
 이름: openclaw
 타입: web
 포트: 18789
@@ -97,21 +97,19 @@ OpenClaw AI 에이전트를 배포해주세요.
     ANTHROPIC_API_KEY: "YOUR_ANTHROPIC_API_KEY"
     TELEGRAM_BOT_TOKEN: "YOUR_TELEGRAM_BOT_TOKEN"
     OPENCLAW_GATEWAY_TOKEN: "YOUR_GATEWAY_TOKEN"
-    OPENCLAW_DOMAIN: (expose 후 설정 — 아래 안내 참조)
 
 시작 커맨드 (sh -c):
 
-1) openclaw.json 작성 (주의: $OPENCLAW_DOMAIN 변수 확장을 위해 unquoted heredoc 사용):
-cat > /home/node/.openclaw/openclaw.json << OCJSON
+1) openclaw.json 작성:
+cat > /home/node/.openclaw/openclaw.json << 'OCJSON'
 {
   "gateway": {
-    "mode": "local",
-    "bind": "loopback",
-    "port": 18790,
+    "bind": "lan",
+    "port": 18789,
     "controlUi": {
       "enabled": true,
       "dangerouslyDisableDeviceAuth": true,
-      "allowedOrigins": ["https://${OPENCLAW_DOMAIN:-localhost}"]
+      "dangerouslyAllowHostHeaderOriginFallback": true
     },
     "auth": { "mode": "token" }
   },
@@ -158,57 +156,12 @@ cat > /home/node/.openclaw/workspace/AGENTS.md << 'EOF'
 YOUR_AGENTS_MD
 EOF
 
-5) HTTP 리버스 프록시 작성 후 백그라운드 실행 (Cloudflare 헤더만 제거 — Host/Origin 재작성 금지):
-cat > /home/node/.openclaw/proxy.js << 'PROXYJS'
-const http = require('http');
-const net = require('net');
-const STRIP = [
-  'x-forwarded-for', 'x-forwarded-proto', 'x-real-ip',
-  'cf-connecting-ip', 'cf-ray', 'cf-visitor',
-  'cf-ipcountry', 'cdn-loop', 'cf-worker'
-];
-
-const server = http.createServer((req, res) => {
-  STRIP.forEach(k => delete req.headers[k]);
-  const proxy = http.request({
-    hostname: '127.0.0.1', port: 18790,
-    path: req.url, method: req.method, headers: req.headers
-  }, upstream => {
-    res.writeHead(upstream.statusCode, upstream.headers);
-    upstream.pipe(res);
-  });
-  req.pipe(proxy);
-  proxy.on('error', () => res.destroy());
-});
-
-server.on('upgrade', (req, socket, head) => {
-  STRIP.forEach(k => delete req.headers[k]);
-  const upstream = net.connect(18790, '127.0.0.1', () => {
-    let raw = req.method + ' ' + req.url + ' HTTP/1.1\r\n';
-    for (const [k, v] of Object.entries(req.headers)) {
-      raw += k + ': ' + v + '\r\n';
-    }
-    raw += '\r\n';
-    upstream.write(raw);
-    if (head.length) upstream.write(head);
-    socket.pipe(upstream);
-    upstream.pipe(socket);
-  });
-  upstream.on('error', () => socket.destroy());
-  socket.on('error', () => upstream.destroy());
-});
-
-server.listen(18789, '0.0.0.0');
-PROXYJS
-node /home/node/.openclaw/proxy.js &
-
-6) 게이트웨이 실행:
-exec node dist/index.js gateway --allow-unconfigured
+5) 게이트웨이 실행:
+exec node openclaw.mjs gateway --allow-unconfigured --bind lan
 
 배포 후:
 1. 도메인 노출 (POST /api/deploy/{id}/expose) → {도메인} 반환
-2. 환경변수 업데이트: OPENCLAW_DOMAIN={도메인} (재시작 트리거, allowedOrigins 적용)
-3. 첫 접속: https://{도메인}/?token={YOUR_GATEWAY_TOKEN}
+2. 첫 접속: https://{도메인}/?token={YOUR_GATEWAY_TOKEN}
 ```
 
 ## Deploy Config
@@ -216,7 +169,7 @@ exec node dist/index.js gateway --allow-unconfigured
 ```json
 {
   "name": "openclaw",
-  "image": "ghcr.io/openclaw/openclaw:2026.2.23",
+  "image": "alpine/openclaw:2026.2.26",
   "chartType": "web",
   "port": 18789,
   "replicas": 1,
@@ -226,31 +179,26 @@ exec node dist/index.js gateway --allow-unconfigured
   "env": {
     "ANTHROPIC_API_KEY": "YOUR_ANTHROPIC_API_KEY",
     "TELEGRAM_BOT_TOKEN": "YOUR_TELEGRAM_BOT_TOKEN",
-    "OPENCLAW_GATEWAY_TOKEN": "YOUR_GATEWAY_TOKEN",
-    "OPENCLAW_DOMAIN": ""
+    "OPENCLAW_GATEWAY_TOKEN": "YOUR_GATEWAY_TOKEN"
   },
   "command": ["sh", "-c"],
   "expose": true,
-  "exposeProtocol": "http",
-  "postExposeEnv": {
-    "OPENCLAW_DOMAIN": "$DOMAIN"
-  }
+  "exposeProtocol": "http"
 }
 ```
 
 ## Startup Script
 
 ```bash
-cat > /home/node/.openclaw/openclaw.json << OCJSON
+cat > /home/node/.openclaw/openclaw.json << 'OCJSON'
 {
   "gateway": {
-    "mode": "local",
-    "bind": "loopback",
-    "port": 18790,
+    "bind": "lan",
+    "port": 18789,
     "controlUi": {
       "enabled": true,
       "dangerouslyDisableDeviceAuth": true,
-      "allowedOrigins": ["https://${OPENCLAW_DOMAIN:-localhost}"]
+      "dangerouslyAllowHostHeaderOriginFallback": true
     },
     "auth": { "mode": "token" }
   },
@@ -282,7 +230,6 @@ cat > /home/node/.openclaw/openclaw.json << OCJSON
 OCJSON
 
 mkdir -p /home/node/.openclaw/workspace
-
 cat > /home/node/.openclaw/workspace/IDENTITY.md << 'EOF'
 YOUR_IDENTITY_MD
 EOF
@@ -295,48 +242,5 @@ cat > /home/node/.openclaw/workspace/AGENTS.md << 'EOF'
 YOUR_AGENTS_MD
 EOF
 
-cat > /home/node/.openclaw/proxy.js << 'PROXYJS'
-const http = require('http');
-const net = require('net');
-const STRIP = [
-  'x-forwarded-for', 'x-forwarded-proto', 'x-real-ip',
-  'cf-connecting-ip', 'cf-ray', 'cf-visitor',
-  'cf-ipcountry', 'cdn-loop', 'cf-worker'
-];
-
-const server = http.createServer((req, res) => {
-  STRIP.forEach(k => delete req.headers[k]);
-  const proxy = http.request({
-    hostname: '127.0.0.1', port: 18790,
-    path: req.url, method: req.method, headers: req.headers
-  }, upstream => {
-    res.writeHead(upstream.statusCode, upstream.headers);
-    upstream.pipe(res);
-  });
-  req.pipe(proxy);
-  proxy.on('error', () => res.destroy());
-});
-
-server.on('upgrade', (req, socket, head) => {
-  STRIP.forEach(k => delete req.headers[k]);
-  const upstream = net.connect(18790, '127.0.0.1', () => {
-    let raw = req.method + ' ' + req.url + ' HTTP/1.1\r\n';
-    for (const [k, v] of Object.entries(req.headers)) {
-      raw += k + ': ' + v + '\r\n';
-    }
-    raw += '\r\n';
-    upstream.write(raw);
-    if (head.length) upstream.write(head);
-    socket.pipe(upstream);
-    upstream.pipe(socket);
-  });
-  upstream.on('error', () => socket.destroy());
-  socket.on('error', () => upstream.destroy());
-});
-
-server.listen(18789, '0.0.0.0');
-PROXYJS
-node /home/node/.openclaw/proxy.js &
-
-exec node dist/index.js gateway --allow-unconfigured
+exec node openclaw.mjs gateway --allow-unconfigured --bind lan
 ```
