@@ -89,7 +89,8 @@ cat > /home/node/.openclaw/openclaw.json << OCJSON
 }
 OCJSON
 
-2) Write IDENTITY.md:
+2) Create workspace directory and write IDENTITY.md:
+mkdir -p /home/node/.openclaw/workspace
 cat > /home/node/.openclaw/workspace/IDENTITY.md << 'EOF'
 # Bullish
 📊
@@ -240,6 +241,8 @@ cat > /home/node/.openclaw/openclaw.json << OCJSON
   }
 }
 OCJSON
+
+mkdir -p /home/node/.openclaw/workspace
 
 cat > /home/node/.openclaw/workspace/IDENTITY.md << 'EOF'
 # Bullish

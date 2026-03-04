@@ -89,7 +89,8 @@ cat > /home/node/.openclaw/openclaw.json << OCJSON
 }
 OCJSON
 
-2) IDENTITY.md 작성:
+2) workspace 디렉토리 생성 및 IDENTITY.md 작성:
+mkdir -p /home/node/.openclaw/workspace
 cat > /home/node/.openclaw/workspace/IDENTITY.md << 'EOF'
 # 상승이
 📊
@@ -240,6 +241,8 @@ cat > /home/node/.openclaw/openclaw.json << OCJSON
   }
 }
 OCJSON
+
+mkdir -p /home/node/.openclaw/workspace
 
 cat > /home/node/.openclaw/workspace/IDENTITY.md << 'EOF'
 # 상승이
