@@ -86,78 +86,13 @@ Deploy an OpenClaw AI agent on Willform.
 
 Image: alpine/openclaw:2026.2.26
 Name: openclaw
-Type: web
 Port: 18789
-Resources: 1 core, 2GB memory
 Volume: /home/node/.openclaw, 8GB
-Health check: null (the literal string "null")
-Replicas: 1
 
 Environment variables:
     ANTHROPIC_API_KEY: "YOUR_ANTHROPIC_API_KEY"
     TELEGRAM_BOT_TOKEN: "YOUR_TELEGRAM_BOT_TOKEN"
     OPENCLAW_GATEWAY_TOKEN: "YOUR_GATEWAY_TOKEN"
-
-Startup command (sh -c):
-
-1) Write openclaw.json:
-cat > /home/node/.openclaw/openclaw.json << 'OCJSON'
-{
-  "gateway": {
-    "bind": "lan",
-    "port": 18789,
-    "controlUi": {
-      "enabled": true,
-      "dangerouslyDisableDeviceAuth": true,
-      "dangerouslyAllowHostHeaderOriginFallback": true
-    },
-    "auth": { "mode": "token" }
-  },
-  "channels": {
-    "telegram": {
-      "enabled": true,
-      "dmPolicy": "allowlist",
-      "allowFrom": ["tg:YOUR_TELEGRAM_USER_ID"]
-    }
-  },
-  "agents": {
-    "defaults": { "sandbox": { "mode": "off" } }
-  },
-  "tools": {
-    "web": { "search": { "enabled": true }, "fetch": { "enabled": true } },
-    "sandbox": {
-      "tools": {
-        "allow": ["exec","process","read","write","edit","sessions_list","sessions_history","sessions_send","sessions_spawn","session_status","browser","canvas","nodes","cron","gateway","web_search","web_fetch"],
-        "deny": []
-      }
-    }
-  },
-  "plugins": {
-    "entries": {
-      "telegram": { "enabled": true }
-    }
-  }
-}
-OCJSON
-
-2) Create workspace directory and write IDENTITY.md:
-mkdir -p /home/node/.openclaw/workspace
-cat > /home/node/.openclaw/workspace/IDENTITY.md << 'EOF'
-YOUR_IDENTITY_MD
-EOF
-
-3) Write SOUL.md:
-cat > /home/node/.openclaw/workspace/SOUL.md << 'EOF'
-YOUR_SOUL_MD
-EOF
-
-4) Write AGENTS.md:
-cat > /home/node/.openclaw/workspace/AGENTS.md << 'EOF'
-YOUR_AGENTS_MD
-EOF
-
-5) Start the gateway:
-exec node openclaw.mjs gateway --allow-unconfigured --bind lan
 
 After deployment:
 1. Expose the domain (POST /api/deploy/{id}/expose) → returns {domain}
@@ -169,8 +104,9 @@ After deployment:
 ```json
 {
   "name": "openclaw",
-  "image": "alpine/openclaw:2026.2.26",
+  "chartName": "openclaw",
   "chartType": "web",
+  "image": "alpine/openclaw:2026.2.26",
   "port": 18789,
   "replicas": 1,
   "volumeSizeGb": 8,
@@ -181,66 +117,35 @@ After deployment:
     "TELEGRAM_BOT_TOKEN": "YOUR_TELEGRAM_BOT_TOKEN",
     "OPENCLAW_GATEWAY_TOKEN": "YOUR_GATEWAY_TOKEN"
   },
-  "command": ["sh", "-c"],
+  "command": [
+    "node",
+    "openclaw.mjs",
+    "gateway",
+    "--allow-unconfigured",
+    "--bind",
+    "lan"
+  ],
   "expose": true,
-  "exposeProtocol": "http"
-}
-```
-
-## Startup Script
-
-```bash
-cat > /home/node/.openclaw/openclaw.json << 'OCJSON'
-{
-  "gateway": {
-    "bind": "lan",
-    "port": 18789,
-    "controlUi": {
-      "enabled": true,
-      "dangerouslyDisableDeviceAuth": true,
-      "dangerouslyAllowHostHeaderOriginFallback": true
-    },
-    "auth": { "mode": "token" }
-  },
-  "channels": {
-    "telegram": {
-      "enabled": true,
-      "dmPolicy": "allowlist",
-      "allowFrom": ["tg:YOUR_TELEGRAM_USER_ID"]
-    }
-  },
-  "agents": {
-    "defaults": { "sandbox": { "mode": "off" } }
-  },
-  "tools": {
-    "web": { "search": { "enabled": true }, "fetch": { "enabled": true } },
-    "sandbox": {
-      "tools": {
-        "allow": ["exec","process","read","write","edit","sessions_list","sessions_history","sessions_send","sessions_spawn","session_status","browser","canvas","nodes","cron","gateway","web_search","web_fetch"],
-        "deny": []
+  "exposeProtocol": "http",
+  "chartValues": {
+    "files": [
+      {
+        "path": "/home/node/.openclaw/openclaw.json",
+        "content": "{\n  \"gateway\": {\n    \"bind\": \"lan\",\n    \"port\": 18789,\n    \"controlUi\": {\n      \"enabled\": true,\n      \"dangerouslyDisableDeviceAuth\": true,\n      \"dangerouslyAllowHostHeaderOriginFallback\": true\n    },\n    \"auth\": {\n      \"mode\": \"token\"\n    }\n  },\n  \"channels\": {\n    \"telegram\": {\n      \"enabled\": true,\n      \"dmPolicy\": \"allowlist\",\n      \"allowFrom\": [\n        \"tg:YOUR_TELEGRAM_USER_ID\"\n      ]\n    }\n  },\n  \"agents\": {\n    \"defaults\": {\n      \"sandbox\": {\n        \"mode\": \"off\"\n      }\n    }\n  },\n  \"tools\": {\n    \"web\": {\n      \"search\": {\n        \"enabled\": true\n      },\n      \"fetch\": {\n        \"enabled\": true\n      }\n    },\n    \"sandbox\": {\n      \"tools\": {\n        \"allow\": [\n          \"exec\",\n          \"process\",\n          \"read\",\n          \"write\",\n          \"edit\",\n          \"sessions_list\",\n          \"sessions_history\",\n          \"sessions_send\",\n          \"sessions_spawn\",\n          \"session_status\",\n          \"browser\",\n          \"canvas\",\n          \"nodes\",\n          \"cron\",\n          \"gateway\",\n          \"web_search\",\n          \"web_fetch\"\n        ],\n        \"deny\": []\n      }\n    }\n  },\n  \"plugins\": {\n    \"entries\": {\n      \"telegram\": {\n        \"enabled\": true\n      }\n    }\n  }\n}"
+      },
+      {
+        "path": "/home/node/.openclaw/workspace/IDENTITY.md",
+        "content": "YOUR_IDENTITY_MD"
+      },
+      {
+        "path": "/home/node/.openclaw/workspace/SOUL.md",
+        "content": "YOUR_SOUL_MD"
+      },
+      {
+        "path": "/home/node/.openclaw/workspace/AGENTS.md",
+        "content": "YOUR_AGENTS_MD"
       }
-    }
-  },
-  "plugins": {
-    "entries": {
-      "telegram": { "enabled": true }
-    }
+    ]
   }
 }
-OCJSON
-
-mkdir -p /home/node/.openclaw/workspace
-cat > /home/node/.openclaw/workspace/IDENTITY.md << 'EOF'
-YOUR_IDENTITY_MD
-EOF
-
-cat > /home/node/.openclaw/workspace/SOUL.md << 'EOF'
-YOUR_SOUL_MD
-EOF
-
-cat > /home/node/.openclaw/workspace/AGENTS.md << 'EOF'
-YOUR_AGENTS_MD
-EOF
-
-exec node openclaw.mjs gateway --allow-unconfigured --bind lan
 ```
