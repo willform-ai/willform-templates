@@ -104,7 +104,6 @@ AI 여행 플래닝 어시스턴트
     "TELEGRAM_BOT_TOKEN": "YOUR_TELEGRAM_BOT_TOKEN",
     "OPENCLAW_GATEWAY_TOKEN": "YOUR_GATEWAY_TOKEN"
   },
-  "command": ["node", "openclaw.mjs", "gateway", "--allow-unconfigured", "--bind", "lan"],
   "expose": true,
   "exposeProtocol": "http",
   "chartValues": {
@@ -121,7 +120,8 @@ AI 여행 플래닝 어시스턴트
                   "repository": "alpine/openclaw",
                   "tag": "2026.3.2"
                 },
-                "command": ["node", "openclaw.mjs", "gateway", "--allow-unconfigured", "--bind", "lan"],
+                "command": ["node", "dist/index.js"],
+                "args": ["gateway", "--allow-unconfigured", "--bind", "lan", "--port", "18789"],
                 "env": {
                   "ANTHROPIC_API_KEY": "YOUR_ANTHROPIC_API_KEY",
                   "TELEGRAM_BOT_TOKEN": "YOUR_TELEGRAM_BOT_TOKEN",
