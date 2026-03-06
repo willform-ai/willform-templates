@@ -17,9 +17,9 @@ One-line description of what this deploys.
 
 Replace the placeholder values below with your own.
 
-| Variable | Where to get it | Description |
-|---|---|---|
-| `YOUR_VARIABLE` | Step-by-step instructions with [links](https://example.com) to the provider's console or docs. Include expected format (e.g. `sk-ant-...`), signup steps if needed, and any billing prerequisites. | What this value is used for |
+| Variable | Where to get it | Description | Example |
+|---|---|---|---|
+| `YOUR_VARIABLE` | Step-by-step instructions with [links](https://example.com) to the provider's console or docs. Include expected format, signup steps if needed, and any billing prerequisites. | What this value is used for | `example-value-format` |
 
 ## Post-Deploy
 
@@ -83,7 +83,7 @@ Valid categories: `web-app`, `database`, `cache`, `queue`, `ai-agent`, `backgrou
 | Title | `# ...` | `# ...` | First H1 heading |
 | Description | (paragraph) | (paragraph) | First paragraph after title |
 | Highlights | `## What You Get` | `## 배포 결과` | Bullet list items |
-| Prerequisites | `## Prerequisites` | `## 사전 준비` | Table rows (Variable, How to get, Purpose) |
+| Prerequisites | `## Prerequisites` | `## 사전 준비` | Table rows (Variable, How to get, Purpose, Example) |
 | Post-Deploy | `## Post-Deploy` | `## 배포 후 안내` | Markdown with variable substitution |
 | Deploy Config | `## Deploy Config` | `## Deploy Config` | JSON code block (required) |
 | Startup Script | `## Startup Script` | `## Startup Script` | Bash code block (optional) |

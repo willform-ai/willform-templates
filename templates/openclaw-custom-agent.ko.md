@@ -19,12 +19,12 @@ tags: [openclaw, telegram, ai, custom]
 
 아래 7개의 값을 입력해 주세요.
 
-| 변수 | 발급 방법 | 용도 |
-|---|---|---|
-| `YOUR_ANTHROPIC_API_KEY` | 1. [Anthropic Console](https://console.anthropic.com/settings/keys)에 접속해서 로그인합니다 (계정이 없으면 가입). 2. **Create Key** 버튼을 눌러 키를 생성하고 `sk-ant-...`로 시작하는 키를 복사합니다. 3. [Plans & Billing](https://console.anthropic.com/settings/billing)에서 크레딧을 충전해야 에이전트가 동작합니다. | 에이전트의 LLM 추론에 사용 |
-| `YOUR_TELEGRAM_BOT_TOKEN` | 1. Telegram에서 [@BotFather](https://t.me/BotFather)를 검색합니다. 2. `/newbot`을 보내고 안내에 따라 봇 이름과 `bot`으로 끝나는 유저네임을 설정합니다. 3. BotFather가 `123456:ABC-DEF...` 형식의 토큰을 알려줍니다 — 전체를 복사합니다. 자세한 내용은 [Telegram Bot API 문서](https://core.telegram.org/bots#how-do-i-create-a-bot)를 참고하세요. | 텔레그램 봇 연결 |
-| `YOUR_TELEGRAM_USER_ID` | 1. Telegram에서 [@userinfobot](https://t.me/userinfobot)을 검색합니다. 2. 아무 메시지(예: "안녕")를 보냅니다. 3. 봇이 숫자로 된 유저 ID(예: `123456789`)를 알려줍니다 — 숫자만 복사합니다. | DM 허용 목록에 본인 등록 |
-| `YOUR_GATEWAY_TOKEN` | 원하는 비밀번호를 직접 정합니다 (예: `my-secret-123`). 외부 서비스에서 발급받는 것이 아니라 본인이 만드는 값입니다. 웹 Control UI 접속 시 인증에 사용됩니다. | 웹 Control UI 접속 인증 |
+| 변수 | 발급 방법 | 용도 | 예시 |
+|---|---|---|---|
+| `YOUR_ANTHROPIC_API_KEY` | 1. [Anthropic Console](https://console.anthropic.com/settings/keys)에 접속해서 로그인합니다 (계정이 없으면 가입). 2. **Create Key** 버튼을 눌러 키를 생성하고 `sk-ant-...`로 시작하는 키를 복사합니다. 3. [Plans & Billing](https://console.anthropic.com/settings/billing)에서 크레딧을 충전해야 에이전트가 동작합니다. | 에이전트의 LLM 추론에 사용 | `sk-ant-...` |
+| `YOUR_TELEGRAM_BOT_TOKEN` | 1. Telegram에서 [@BotFather](https://t.me/BotFather)를 검색합니다. 2. `/newbot`을 보내고 안내에 따라 봇 이름과 `bot`으로 끝나는 유저네임을 설정합니다. 3. BotFather가 `123456:ABC-DEF...` 형식의 토큰을 알려줍니다 — 전체를 복사합니다. 자세한 내용은 [Telegram Bot API 문서](https://core.telegram.org/bots#how-do-i-create-a-bot)를 참고하세요. | 텔레그램 봇 연결 | `1234567890:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX` |
+| `YOUR_TELEGRAM_USER_ID` | 1. Telegram에서 [@userinfobot](https://t.me/userinfobot)을 검색합니다. 2. 아무 메시지(예: "안녕")를 보냅니다. 3. 봇이 숫자로 된 유저 ID(예: `123456789`)를 알려줍니다 — 숫자만 복사합니다. | DM 허용 목록에 본인 등록 | `1234567890` |
+| `YOUR_GATEWAY_TOKEN` | 원하는 비밀번호를 직접 정합니다 (예: `my-secret-123`). 외부 서비스에서 발급받는 것이 아니라 본인이 만드는 값입니다. 웹 Control UI 접속 시 인증에 사용됩니다. | 웹 Control UI 접속 인증 | `my-secret-123` |
 | `YOUR_IDENTITY_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 이름, 이모지, 역할 정의 |
 | `YOUR_SOUL_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 성격, 전문성, 말투 정의 |
 | `YOUR_AGENTS_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 행동 규칙과 제약 조건 정의 |
