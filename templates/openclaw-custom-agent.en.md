@@ -26,8 +26,8 @@ Replace the 7 placeholder values below with your own.
 | `YOUR_TELEGRAM_USER_ID` | Send any message to [@userinfobot](https://t.me/userinfobot) and copy the numeric ID | Adds you to the DM allowlist | `1234567890` |
 | `YOUR_GATEWAY_TOKEN` | Choose any password you like — this is your own secret | Authenticates access to the web Control UI | `my-secret-123` |
 | `YOUR_IDENTITY_MD` | Write your own (see guide below) | Defines the agent's name, emoji, and role | `# Atlas\n🌍\nAI Travel Assistant` |
-| `YOUR_SOUL_MD` | Write your own (see guide below) | Defines the agent's personality, expertise, and tone | `# Atlas — AI Travel Planner\nI am Atlas. Use a friendly tone.` |
-| `YOUR_AGENTS_MD` | Write your own (see guide below) | Defines the agent's behavior rules and constraints | `# Behavior Rules\n- Reference SOUL.md before every response` |
+| `YOUR_SOUL_MD` | Write your own (see guide below) | Defines the agent's personality, expertise, and tone | `# Atlas — AI Travel Planner\nI am Atlas. Use a friendly tone.\nExpertise: flights, hotels, itineraries.` |
+| `YOUR_AGENTS_MD` | Write your own (see guide below) | Defines the agent's behavior rules and constraints | `# Behavior Rules\n- Reference SOUL.md before every response\n- Save user preferences to memory` |
 
 ### How to write IDENTITY.md
 

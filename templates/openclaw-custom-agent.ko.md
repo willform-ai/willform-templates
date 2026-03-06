@@ -26,8 +26,8 @@ tags: [openclaw, telegram, ai, custom]
 | `YOUR_TELEGRAM_USER_ID` | [@userinfobot](https://t.me/userinfobot)에게 아무 메시지 전송 → 숫자 ID 복사 | DM 허용 목록에 본인 등록 | `1234567890` |
 | `YOUR_GATEWAY_TOKEN` | 원하는 비밀번호를 직접 정합니다 | 웹 Control UI 접속 인증 | `my-secret-123` |
 | `YOUR_IDENTITY_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 이름, 이모지, 역할 정의 | `# 아틀라스\n🌍\nAI 여행 어시스턴트` |
-| `YOUR_SOUL_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 성격, 전문성, 말투 정의 | `# 아틀라스 — AI 여행 플래너\n나는 아틀라스다. 친절한 말투를 사용한다.` |
-| `YOUR_AGENTS_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 행동 규칙과 제약 조건 정의 | `# 행동 규칙\n- 매 응답 전 SOUL.md 참조` |
+| `YOUR_SOUL_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 성격, 전문성, 말투 정의 | `# 아틀라스 — AI 여행 플래너\n나는 아틀라스다. 친절한 말투를 사용한다.\n전문 분야: 항공편, 호텔, 일정 계획.` |
+| `YOUR_AGENTS_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 행동 규칙과 제약 조건 정의 | `# 행동 규칙\n- 매 응답 전 SOUL.md 참조\n- 유저 선호도를 memory에 저장` |
 
 ### IDENTITY.md 작성 가이드
 
