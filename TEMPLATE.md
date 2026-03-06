@@ -19,7 +19,7 @@ Replace the placeholder values below with your own.
 
 | Variable | Where to get it | Description | Example |
 |---|---|---|---|
-| `YOUR_VARIABLE` | Step-by-step instructions with [links](https://example.com) to the provider's console or docs. Include expected format, signup steps if needed, and any billing prerequisites. | What this value is used for | `example-value-format` |
+| `YOUR_VARIABLE` | Brief description with [link](https://example.com) to provider console or docs | What this value is used for | `example-value` |
 
 ## Post-Deploy
 

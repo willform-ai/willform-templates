@@ -21,13 +21,13 @@ Replace the 7 placeholder values below with your own.
 
 | Variable | How to get it | Purpose | Example |
 |---|---|---|---|
-| `YOUR_ANTHROPIC_API_KEY` | 1. Go to [Anthropic Console](https://console.anthropic.com/settings/keys) and sign in (or create an account). 2. Click **Create Key**, name it, and copy the key starting with `sk-ant-...`. 3. Add billing credits at [Plans & Billing](https://console.anthropic.com/settings/billing) — the agent won't work without credits. | Powers LLM inference for the agent | `sk-ant-...` |
-| `YOUR_TELEGRAM_BOT_TOKEN` | 1. Open Telegram and search for [@BotFather](https://t.me/BotFather). 2. Send `/newbot` and follow the prompts — choose a display name and a username ending in `bot`. 3. BotFather replies with a token like `123456:ABC-DEF...` — copy the entire token. See [Telegram Bot API docs](https://core.telegram.org/bots#how-do-i-create-a-bot) for details. | Connects the bot to Telegram | `1234567890:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX` |
-| `YOUR_TELEGRAM_USER_ID` | 1. Open Telegram and search for [@userinfobot](https://t.me/userinfobot). 2. Send any message (e.g. "hi"). 3. The bot replies with your numeric user ID (e.g. `123456789`) — copy just the number. | Adds you to the DM allowlist | `1234567890` |
-| `YOUR_GATEWAY_TOKEN` | Choose any password you like (e.g. `my-secret-123`). This is NOT provided by a third party — you make it up yourself. It protects access to the web Control UI. | Authenticates access to the web Control UI | `my-secret-123` |
-| `YOUR_IDENTITY_MD` | Write your own (see guide below) | Defines the agent's name, emoji, and role |
-| `YOUR_SOUL_MD` | Write your own (see guide below) | Defines the agent's personality, expertise, and tone |
-| `YOUR_AGENTS_MD` | Write your own (see guide below) | Defines the agent's behavior rules and constraints |
+| `YOUR_ANTHROPIC_API_KEY` | Create at [Anthropic Console](https://console.anthropic.com/settings/keys). Add credits at [Billing](https://console.anthropic.com/settings/billing). | Powers LLM inference for the agent | `sk-ant-api03-...` |
+| `YOUR_TELEGRAM_BOT_TOKEN` | Send `/newbot` to [@BotFather](https://t.me/BotFather). [Docs](https://core.telegram.org/bots#how-do-i-create-a-bot) | Connects the bot to Telegram | `110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw` |
+| `YOUR_TELEGRAM_USER_ID` | Send any message to [@userinfobot](https://t.me/userinfobot) and copy the numeric ID | Adds you to the DM allowlist | `1234567890` |
+| `YOUR_GATEWAY_TOKEN` | Choose any password you like — this is your own secret | Authenticates access to the web Control UI | `my-secret-123` |
+| `YOUR_IDENTITY_MD` | Write your own (see guide below) | Defines the agent's name, emoji, and role | `# Atlas\n🌍\nAI Travel Assistant` |
+| `YOUR_SOUL_MD` | Write your own (see guide below) | Defines the agent's personality, expertise, and tone | `# Atlas — AI Travel Planner\nI am Atlas. Use a friendly tone.` |
+| `YOUR_AGENTS_MD` | Write your own (see guide below) | Defines the agent's behavior rules and constraints | `# Behavior Rules\n- Reference SOUL.md before every response` |
 
 ### How to write IDENTITY.md
 
