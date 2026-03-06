@@ -17,7 +17,7 @@ tags: [openclaw, telegram, ai, custom]
 
 ## 사전 준비
 
-아래 7개의 값을 본인 것으로 교체한 뒤, 프롬프트 전체를 AI 에이전트에 붙여넣으세요.
+아래 7개의 값을 입력해 주세요.
 
 | 변수 | 발급 방법 | 용도 |
 |---|---|---|
@@ -79,25 +79,11 @@ AI 여행 플래닝 어시스턴트
 - 어떤 언어로 질문받아도 반드시 한국어로 응답
 ```
 
-## 프롬프트
+## 배포 후 안내
 
-```
-OpenClaw AI 에이전트를 배포해주세요.
+**Control UI**: https://$DOMAIN/?token=YOUR_GATEWAY_TOKEN
 
-이미지: alpine/openclaw:2026.2.26
-이름: openclaw
-포트: 18789
-볼륨: /home/node/.openclaw, 8GB
-
-환경변수:
-    ANTHROPIC_API_KEY: "YOUR_ANTHROPIC_API_KEY"
-    TELEGRAM_BOT_TOKEN: "YOUR_TELEGRAM_BOT_TOKEN"
-    OPENCLAW_GATEWAY_TOKEN: "YOUR_GATEWAY_TOKEN"
-
-배포 후:
-1. 도메인 노출 (POST /api/deploy/{id}/expose) → {도메인} 반환
-2. 첫 접속: https://{도메인}/?token={YOUR_GATEWAY_TOKEN}
-```
+위 링크로 접속하면 에이전트를 관리할 수 있습니다. 텔레그램에서 봇에게 메시지를 보내면 바로 사용할 수 있습니다.
 
 ## Deploy Config
 
@@ -105,8 +91,9 @@ OpenClaw AI 에이전트를 배포해주세요.
 {
   "name": "openclaw",
   "chartName": "openclaw",
+  "nativeChart": true,
   "chartType": "web",
-  "image": "alpine/openclaw:2026.2.26",
+  "image": "alpine/openclaw:2026.3.2",
   "port": 18789,
   "replicas": 1,
   "volumeSizeGb": 8,
@@ -117,35 +104,64 @@ OpenClaw AI 에이전트를 배포해주세요.
     "TELEGRAM_BOT_TOKEN": "YOUR_TELEGRAM_BOT_TOKEN",
     "OPENCLAW_GATEWAY_TOKEN": "YOUR_GATEWAY_TOKEN"
   },
-  "command": [
-    "node",
-    "openclaw.mjs",
-    "gateway",
-    "--allow-unconfigured",
-    "--bind",
-    "lan"
-  ],
+  "command": ["node", "openclaw.mjs", "gateway", "--allow-unconfigured", "--bind", "lan"],
   "expose": true,
   "exposeProtocol": "http",
   "chartValues": {
-    "files": [
-      {
-        "path": "/home/node/.openclaw/openclaw.json",
-        "content": "{\n  \"gateway\": {\n    \"bind\": \"lan\",\n    \"port\": 18789,\n    \"controlUi\": {\n      \"enabled\": true,\n      \"dangerouslyDisableDeviceAuth\": true,\n      \"dangerouslyAllowHostHeaderOriginFallback\": true\n    },\n    \"auth\": {\n      \"mode\": \"token\"\n    }\n  },\n  \"channels\": {\n    \"telegram\": {\n      \"enabled\": true,\n      \"dmPolicy\": \"allowlist\",\n      \"allowFrom\": [\n        \"tg:YOUR_TELEGRAM_USER_ID\"\n      ]\n    }\n  },\n  \"agents\": {\n    \"defaults\": {\n      \"sandbox\": {\n        \"mode\": \"off\"\n      }\n    }\n  },\n  \"tools\": {\n    \"web\": {\n      \"search\": {\n        \"enabled\": true\n      },\n      \"fetch\": {\n        \"enabled\": true\n      }\n    },\n    \"sandbox\": {\n      \"tools\": {\n        \"allow\": [\n          \"exec\",\n          \"process\",\n          \"read\",\n          \"write\",\n          \"edit\",\n          \"sessions_list\",\n          \"sessions_history\",\n          \"sessions_send\",\n          \"sessions_spawn\",\n          \"session_status\",\n          \"browser\",\n          \"canvas\",\n          \"nodes\",\n          \"cron\",\n          \"gateway\",\n          \"web_search\",\n          \"web_fetch\"\n        ],\n        \"deny\": []\n      }\n    }\n  },\n  \"plugins\": {\n    \"entries\": {\n      \"telegram\": {\n        \"enabled\": true\n      }\n    }\n  }\n}"
-      },
-      {
-        "path": "/home/node/.openclaw/workspace/IDENTITY.md",
-        "content": "YOUR_IDENTITY_MD"
-      },
-      {
-        "path": "/home/node/.openclaw/workspace/SOUL.md",
-        "content": "YOUR_SOUL_MD"
-      },
-      {
-        "path": "/home/node/.openclaw/workspace/AGENTS.md",
-        "content": "YOUR_AGENTS_MD"
+    "upstream": {
+      "app-template": {
+        "openclawVersion": "2026.3.2",
+        "configMode": "overwrite",
+        "controllers": {
+          "main": {
+            "replicas": 1,
+            "containers": {
+              "main": {
+                "image": {
+                  "repository": "alpine/openclaw",
+                  "tag": "2026.3.2"
+                },
+                "command": ["node", "openclaw.mjs", "gateway", "--allow-unconfigured", "--bind", "lan"],
+                "env": {
+                  "ANTHROPIC_API_KEY": "YOUR_ANTHROPIC_API_KEY",
+                  "TELEGRAM_BOT_TOKEN": "YOUR_TELEGRAM_BOT_TOKEN",
+                  "OPENCLAW_GATEWAY_TOKEN": "YOUR_GATEWAY_TOKEN"
+                }
+              },
+              "chromium": {
+                "enabled": false
+              }
+            },
+            "initContainers": {
+              "init-config": {
+                "command": ["sh", "-c"],
+                "args": ["mkdir -p /home/node/.openclaw/workspace && cp /config/openclaw.json /home/node/.openclaw/openclaw.json && for f in IDENTITY.md SOUL.md AGENTS.md; do [ -f /config/$f ] && cp /config/$f /home/node/.openclaw/workspace/$f; done"]
+              }
+            }
+          }
+        },
+        "configMaps": {
+          "config": {
+            "data": {
+              "openclaw.json": "{\n  \"gateway\": {\n    \"bind\": \"lan\",\n    \"port\": 18789,\n    \"controlUi\": {\n      \"enabled\": true,\n      \"dangerouslyDisableDeviceAuth\": true,\n      \"dangerouslyAllowHostHeaderOriginFallback\": true\n    },\n    \"auth\": {\n      \"mode\": \"token\"\n    }\n  },\n  \"channels\": {\n    \"telegram\": {\n      \"enabled\": true,\n      \"dmPolicy\": \"allowlist\",\n      \"allowFrom\": [\n        \"tg:YOUR_TELEGRAM_USER_ID\"\n      ]\n    }\n  },\n  \"agents\": {\n    \"defaults\": {\n      \"sandbox\": {\n        \"mode\": \"off\"\n      }\n    }\n  },\n  \"tools\": {\n    \"web\": {\n      \"search\": {\n        \"enabled\": true\n      },\n      \"fetch\": {\n        \"enabled\": true\n      }\n    },\n    \"sandbox\": {\n      \"tools\": {\n        \"allow\": [\n          \"exec\",\n          \"process\",\n          \"read\",\n          \"write\",\n          \"edit\",\n          \"sessions_list\",\n          \"sessions_history\",\n          \"sessions_send\",\n          \"sessions_spawn\",\n          \"session_status\",\n          \"browser\",\n          \"canvas\",\n          \"nodes\",\n          \"cron\",\n          \"gateway\",\n          \"web_search\",\n          \"web_fetch\"\n        ],\n        \"deny\": []\n      }\n    }\n  },\n  \"plugins\": {\n    \"entries\": {\n      \"telegram\": {\n        \"enabled\": true\n      }\n    }\n  }\n}",
+              "IDENTITY.md": "YOUR_IDENTITY_MD",
+              "SOUL.md": "YOUR_SOUL_MD",
+              "AGENTS.md": "YOUR_AGENTS_MD"
+            }
+          }
+        },
+        "persistence": {
+          "data": {
+            "size": "8Gi"
+          }
+        }
       }
-    ]
+    }
+  },
+  "valuesMappings": {
+    "replicas": "upstream.app-template.controllers.main.replicas",
+    "env": "upstream.app-template.controllers.main.containers.main.env",
+    "image.tag": "upstream.app-template.openclawVersion"
   }
 }
 ```

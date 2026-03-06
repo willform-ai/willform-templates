@@ -15,20 +15,39 @@ One-line description of what this deploys.
 
 ## Prerequisites
 
-Replace the placeholder values below with your own before pasting the prompt.
+Replace the placeholder values below with your own.
 
 | Variable | Where to get it | Description |
 |---|---|---|
 | `YOUR_VARIABLE` | Link or instructions | What this value is used for |
 
-## Prompt
+## Post-Deploy
 
-```
-Your deployment prompt here.
+**Access**: https://$DOMAIN
 
-Use YOUR_VARIABLE placeholders for any user-specific values.
-Keep the prompt self-contained — the AI agent should be able to
-execute it without asking follow-up questions.
+Describe what the user should do after deployment. Use `$DOMAIN` for the deployed domain, and any prerequisite variable (e.g. `$GATEWAY_TOKEN`) — they are automatically substituted with the actual values.
+
+Available variables:
+- `$NAME` — deployment name
+- `$DEPLOYMENT_ID` — deployment UUID
+- `$DOMAIN` — exposed domain (if `expose: true`)
+- `$INTERNAL_ENDPOINT` — cluster-internal endpoint
+- `$STATUS` — deployment status
+- Any prerequisite variable name (e.g. `YOUR_GATEWAY_TOKEN`, `YOUR_API_KEY`) — substituted with the user's input
+
+## Deploy Config
+
+```json
+{
+  "name": "my-app",
+  "chartType": "web",
+  "image": "my-image:latest",
+  "port": 3000,
+  "env": {
+    "MY_VAR": "YOUR_VARIABLE"
+  },
+  "expose": true
+}
 ```
 
 ## How It Works
@@ -65,4 +84,6 @@ Valid categories: `web-app`, `database`, `cache`, `queue`, `ai-agent`, `backgrou
 | Description | (paragraph) | (paragraph) | First paragraph after title |
 | Highlights | `## What You Get` | `## 배포 결과` | Bullet list items |
 | Prerequisites | `## Prerequisites` | `## 사전 준비` | Table rows (Variable, How to get, Purpose) |
-| Prompt | `## Prompt` | `## 프롬프트` | Content inside code block |
+| Post-Deploy | `## Post-Deploy` | `## 배포 후 안내` | Markdown with variable substitution |
+| Deploy Config | `## Deploy Config` | `## Deploy Config` | JSON code block (required) |
+| Startup Script | `## Startup Script` | `## Startup Script` | Bash code block (optional) |
