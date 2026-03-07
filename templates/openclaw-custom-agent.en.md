@@ -24,82 +24,69 @@ Replace the placeholder values below with your own.
 | `YOUR_TELEGRAM_BOT_TOKEN` | Send `/newbot` to [@BotFather](https://t.me/BotFather). [Docs](https://core.telegram.org/bots#how-do-i-create-a-bot) | Connects the bot to Telegram | `110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw` |
 | `YOUR_TELEGRAM_USER_ID` | Send any message to [@userinfobot](https://t.me/userinfobot) and copy the numeric ID | Adds you to the DM allowlist | `1234567890` |
 | `YOUR_GATEWAY_TOKEN` | Choose any password you like — this is your own secret | Authenticates access to the web Control UI | `my-secret-123` |
-| `YOUR_IDENTITY_MD` | Write your own (see guide below) | Defines the agent's name, emoji, and role | `# Atlas\n🌍\nAI Travel Assistant` |
-| `YOUR_SOUL_MD` | Write your own (see guide below) | Defines the agent's personality, expertise, and tone | `# Atlas — AI Travel Planner\nI am Atlas. Use a friendly tone.\nExpertise: flights, hotels, itineraries.` |
-| `YOUR_AGENTS_MD` | Write your own (see guide below) | Defines the agent's behavior rules and constraints | `# Behavior Rules\n- Reference SOUL.md before every response\n- Save user preferences to memory` |
+| `YOUR_OPENROUTER_API_KEY` | Create at [OpenRouter](https://openrouter.ai/keys). Add credits at [Credits](https://openrouter.ai/credits). | LLM inference — 200+ models (default) | `sk-or-v1-...` |
+| `YOUR_OPENAI_API_KEY` | Create at [OpenAI Platform](https://platform.openai.com/api-keys). Add credits at [Billing](https://platform.openai.com/settings/organization/billing). | LLM inference — OpenAI models | `sk-proj-...` |
+| `YOUR_ANTHROPIC_API_KEY` | Create at [Anthropic Console](https://console.anthropic.com/settings/keys). Add credits at [Billing](https://console.anthropic.com/settings/billing). | LLM inference — Claude models | `sk-ant-api03-...` |
+| `YOUR_GEMINI_API_KEY` | Create at [Google AI Studio](https://aistudio.google.com/apikey). | LLM inference — Gemini models | `AIza...` |
+| `YOUR_IDENTITY_MD` | Write your own (see guide below) | Defines the agent's name, emoji, and role | See example below |
+| `YOUR_SOUL_MD` | Write your own (see guide below) | Defines the agent's personality, expertise, and tone | See example below |
+| `YOUR_AGENTS_MD` | Write your own (see guide below) | Defines the agent's behavior rules and constraints | See example below |
 
-### Provider: OpenRouter (default)
-
-| Variable | How to get it | Purpose | Example |
-|---|---|---|---|
-| `YOUR_OPENROUTER_API_KEY` | Create at [OpenRouter](https://openrouter.ai/keys). Add credits at [Credits](https://openrouter.ai/credits). | Powers LLM inference (supports 200+ models) | `sk-or-v1-...` |
-
-### Provider: OpenAI
-
-| Variable | How to get it | Purpose | Example |
-|---|---|---|---|
-| `YOUR_OPENAI_API_KEY` | Create at [OpenAI Platform](https://platform.openai.com/api-keys). Add credits at [Billing](https://platform.openai.com/settings/organization/billing). | Powers LLM inference via OpenAI models | `sk-proj-...` |
-
-### Provider: Anthropic
-
-| Variable | How to get it | Purpose | Example |
-|---|---|---|---|
-| `YOUR_ANTHROPIC_API_KEY` | Create at [Anthropic Console](https://console.anthropic.com/settings/keys). Add credits at [Billing](https://console.anthropic.com/settings/billing). | Powers LLM inference via Claude models | `sk-ant-api03-...` |
-
-### Provider: Google Gemini
-
-| Variable | How to get it | Purpose | Example |
-|---|---|---|---|
-| `YOUR_GEMINI_API_KEY` | Create at [Google AI Studio](https://aistudio.google.com/apikey). | Powers LLM inference via Gemini models | `AIza...` |
+> Only one API key is required. Choose the provider you want to use and leave the rest blank.
 
 ### How to write IDENTITY.md
 
-Three lines that define who your agent is:
-
-```
-# AgentName
-🤖
-Short role description
-```
+Defines who your agent is — name tag, role, and vibe.
 
 Example:
 ```
-# Atlas
-🌍
-AI Travel Planning Assistant
+# Identity
+
+Name: ...
+Creature: ...
+Vibe: ...
+Emoji: ...
 ```
 
 ### How to write SOUL.md
 
-A short document that defines your agent's personality. Include:
-- Who the agent is (name and role)
-- Language and tone preferences
-- Areas of expertise
-- Key constraints or boundaries
+Defines your agent's personality — core values, boundaries, and communication style.
 
 Example:
 ```
-# Atlas — AI Travel Planner
-I am Atlas, an AI travel planning assistant.
-All responses must be written in English. Use a friendly, enthusiastic tone.
-Areas of expertise: flight search, hotel recommendations, itinerary planning, local cuisine, cultural tips.
-Prioritize budget-conscious options and always mention visa requirements.
-Never book anything on behalf of the user — only suggest and inform.
+# Soul
+
+## Core Truths
+- ...
+
+## Boundaries
+- ...
+
+## Vibe
+...
+
+## Continuity
+...
 ```
 
 ### How to write AGENTS.md
 
-A list of behavior rules your agent must follow:
+Defines the agent's operating manual — startup routine, memory management, and task-specific workflows.
 
 Example:
 ```
-# Agent Behavior Rules
-- Reference SOUL.md before every response
-- Load memory files at the start of each session
-- Always provide multiple options with price ranges
-- Save user travel preferences and past trips to memory
-- Never share personal information in group chats
-- Always respond in English regardless of the language of the question
+# Agents
+
+## Session Startup
+1. ...
+
+## Memory Management
+- ...
+
+## Analysis Framework
+1. ...
+2. ...
+3. ...
 ```
 
 ## Post-Deploy

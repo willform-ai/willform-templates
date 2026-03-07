@@ -24,82 +24,69 @@ tags: [openclaw, telegram, ai, custom]
 | `YOUR_TELEGRAM_BOT_TOKEN` | [@BotFather](https://t.me/BotFather)에게 `/newbot` 전송. [가이드](https://core.telegram.org/bots#how-do-i-create-a-bot) | 텔레그램 봇 연결 | `110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw` |
 | `YOUR_TELEGRAM_USER_ID` | [@userinfobot](https://t.me/userinfobot)에게 아무 메시지 전송 → 숫자 ID 복사 | DM 허용 목록에 본인 등록 | `1234567890` |
 | `YOUR_GATEWAY_TOKEN` | 원하는 비밀번호를 직접 정합니다 | 웹 Control UI 접속 인증 | `my-secret-123` |
-| `YOUR_IDENTITY_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 이름, 이모지, 역할 정의 | `# 아틀라스\n🌍\nAI 여행 어시스턴트` |
-| `YOUR_SOUL_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 성격, 전문성, 말투 정의 | `# 아틀라스 — AI 여행 플래너\n나는 아틀라스다. 친절한 말투를 사용한다.\n전문 분야: 항공편, 호텔, 일정 계획.` |
-| `YOUR_AGENTS_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 행동 규칙과 제약 조건 정의 | `# 행동 규칙\n- 매 응답 전 SOUL.md 참조\n- 유저 선호도를 memory에 저장` |
+| `YOUR_OPENROUTER_API_KEY` | [OpenRouter](https://openrouter.ai/keys)에서 생성. [Credits](https://openrouter.ai/credits)에서 크레딧 충전. | LLM 추론 — 200+ 모델 (기본값) | `sk-or-v1-...` |
+| `YOUR_OPENAI_API_KEY` | [OpenAI Platform](https://platform.openai.com/api-keys)에서 생성. [Billing](https://platform.openai.com/settings/organization/billing)에서 크레딧 충전. | LLM 추론 — OpenAI 모델 | `sk-proj-...` |
+| `YOUR_ANTHROPIC_API_KEY` | [Anthropic Console](https://console.anthropic.com/settings/keys)에서 생성. [Billing](https://console.anthropic.com/settings/billing)에서 크레딧 충전. | LLM 추론 — Claude 모델 | `sk-ant-api03-...` |
+| `YOUR_GEMINI_API_KEY` | [Google AI Studio](https://aistudio.google.com/apikey)에서 생성. | LLM 추론 — Gemini 모델 | `AIza...` |
+| `YOUR_IDENTITY_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 이름, 이모지, 역할 정의 | 아래 예시 참조 |
+| `YOUR_SOUL_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 성격, 전문성, 말투 정의 | 아래 예시 참조 |
+| `YOUR_AGENTS_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 행동 규칙과 제약 조건 정의 | 아래 예시 참조 |
 
-### Provider: OpenRouter (default)
-
-| 변수 | 발급 방법 | 용도 | 예시 |
-|---|---|---|---|
-| `YOUR_OPENROUTER_API_KEY` | [OpenRouter](https://openrouter.ai/keys)에서 생성. [Credits](https://openrouter.ai/credits)에서 크레딧 충전. | LLM 추론 (200+ 모델 지원) | `sk-or-v1-...` |
-
-### Provider: OpenAI
-
-| 변수 | 발급 방법 | 용도 | 예시 |
-|---|---|---|---|
-| `YOUR_OPENAI_API_KEY` | [OpenAI Platform](https://platform.openai.com/api-keys)에서 생성. [Billing](https://platform.openai.com/settings/organization/billing)에서 크레딧 충전. | OpenAI 모델로 LLM 추론 | `sk-proj-...` |
-
-### Provider: Anthropic
-
-| 변수 | 발급 방법 | 용도 | 예시 |
-|---|---|---|---|
-| `YOUR_ANTHROPIC_API_KEY` | [Anthropic Console](https://console.anthropic.com/settings/keys)에서 생성. [Billing](https://console.anthropic.com/settings/billing)에서 크레딧 충전. | Claude 모델로 LLM 추론 | `sk-ant-api03-...` |
-
-### Provider: Google Gemini
-
-| 변수 | 발급 방법 | 용도 | 예시 |
-|---|---|---|---|
-| `YOUR_GEMINI_API_KEY` | [Google AI Studio](https://aistudio.google.com/apikey)에서 생성. | Gemini 모델로 LLM 추론 | `AIza...` |
+> API 키는 하나만 있으면 됩니다. 사용할 Provider를 선택하고 나머지는 비워 두세요.
 
 ### IDENTITY.md 작성 가이드
 
-에이전트가 누구인지 정의하는 3줄입니다:
-
-```
-# 에이전트이름
-🤖
-역할 한 줄 설명
-```
+에이전트의 이름표를 정의합니다 — 이름, 역할, 분위기.
 
 예시:
 ```
-# 아틀라스
-🌍
-AI 여행 플래닝 어시스턴트
+# Identity
+
+Name: ...
+Creature: ...
+Vibe: ...
+Emoji: ...
 ```
 
 ### SOUL.md 작성 가이드
 
-에이전트의 성격을 정의하는 짧은 문서입니다. 포함할 내용:
-- 에이전트의 이름과 역할
-- 언어 및 말투 설정
-- 전문 분야
-- 핵심 제약 조건 또는 경계
+에이전트의 성격을 정의합니다 — 핵심 가치관, 경계, 커뮤니케이션 스타일.
 
 예시:
 ```
-# 아틀라스 — AI 여행 플래너
-나는 아틀라스, AI 여행 플래닝 어시스턴트다.
-모든 응답은 반드시 한국어로 작성한다. 친절하고 활기찬 말투를 사용한다.
-전문 분야: 항공편 검색, 호텔 추천, 일정 계획, 현지 맛집, 문화 팁.
-가성비 좋은 옵션을 우선 제안하고, 비자 요건을 반드시 언급한다.
-사용자를 대신해서 예약하지 않는다 — 제안과 정보 제공만 한다.
+# Soul
+
+## Core Truths
+- ...
+
+## Boundaries
+- ...
+
+## Vibe
+...
+
+## Continuity
+...
 ```
 
 ### AGENTS.md 작성 가이드
 
-에이전트가 따라야 할 행동 규칙 목록입니다:
+에이전트의 업무 매뉴얼을 정의합니다 — 시작 루틴, 메모리 관리, 업무별 프레임워크.
 
 예시:
 ```
-# Agent 행동 규칙
-- 매 응답 전 SOUL.md 참조
-- 세션마다 memory 파일 로드
-- 항상 가격대별 여러 옵션을 제시
-- 유저 여행 선호도와 과거 여행 이력을 memory에 저장
-- 그룹챗에서 개인 정보 공유 금지
-- 어떤 언어로 질문받아도 반드시 한국어로 응답
+# Agents
+
+## 세션 시작 루틴
+1. ...
+
+## 메모리 관리
+- ...
+
+## 분석 프레임워크
+1. ...
+2. ...
+3. ...
 ```
 
 ## 배포 후 안내
