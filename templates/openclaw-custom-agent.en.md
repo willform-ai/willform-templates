@@ -17,17 +17,40 @@ Deploy your own AI agent on Telegram with a fully customizable identity, persona
 
 ## Prerequisites
 
-Replace the 7 placeholder values below with your own.
+Replace the placeholder values below with your own.
 
 | Variable | How to get it | Purpose | Example |
 |---|---|---|---|
-| `YOUR_ANTHROPIC_API_KEY` | Create at [Anthropic Console](https://console.anthropic.com/settings/keys). Add credits at [Billing](https://console.anthropic.com/settings/billing). | Powers LLM inference for the agent | `sk-ant-api03-...` |
 | `YOUR_TELEGRAM_BOT_TOKEN` | Send `/newbot` to [@BotFather](https://t.me/BotFather). [Docs](https://core.telegram.org/bots#how-do-i-create-a-bot) | Connects the bot to Telegram | `110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw` |
 | `YOUR_TELEGRAM_USER_ID` | Send any message to [@userinfobot](https://t.me/userinfobot) and copy the numeric ID | Adds you to the DM allowlist | `1234567890` |
 | `YOUR_GATEWAY_TOKEN` | Choose any password you like — this is your own secret | Authenticates access to the web Control UI | `my-secret-123` |
 | `YOUR_IDENTITY_MD` | Write your own (see guide below) | Defines the agent's name, emoji, and role | `# Atlas\n🌍\nAI Travel Assistant` |
 | `YOUR_SOUL_MD` | Write your own (see guide below) | Defines the agent's personality, expertise, and tone | `# Atlas — AI Travel Planner\nI am Atlas. Use a friendly tone.\nExpertise: flights, hotels, itineraries.` |
 | `YOUR_AGENTS_MD` | Write your own (see guide below) | Defines the agent's behavior rules and constraints | `# Behavior Rules\n- Reference SOUL.md before every response\n- Save user preferences to memory` |
+
+### Provider: OpenRouter (default)
+
+| Variable | How to get it | Purpose | Example |
+|---|---|---|---|
+| `YOUR_OPENROUTER_API_KEY` | Create at [OpenRouter](https://openrouter.ai/keys). Add credits at [Credits](https://openrouter.ai/credits). | Powers LLM inference (supports 200+ models) | `sk-or-v1-...` |
+
+### Provider: OpenAI
+
+| Variable | How to get it | Purpose | Example |
+|---|---|---|---|
+| `YOUR_OPENAI_API_KEY` | Create at [OpenAI Platform](https://platform.openai.com/api-keys). Add credits at [Billing](https://platform.openai.com/settings/organization/billing). | Powers LLM inference via OpenAI models | `sk-proj-...` |
+
+### Provider: Anthropic
+
+| Variable | How to get it | Purpose | Example |
+|---|---|---|---|
+| `YOUR_ANTHROPIC_API_KEY` | Create at [Anthropic Console](https://console.anthropic.com/settings/keys). Add credits at [Billing](https://console.anthropic.com/settings/billing). | Powers LLM inference via Claude models | `sk-ant-api03-...` |
+
+### Provider: Google Gemini
+
+| Variable | How to get it | Purpose | Example |
+|---|---|---|---|
+| `YOUR_GEMINI_API_KEY` | Create at [Google AI Studio](https://aistudio.google.com/apikey). | Powers LLM inference via Gemini models | `AIza...` |
 
 ### How to write IDENTITY.md
 
@@ -100,7 +123,10 @@ Open the link above to manage your agent. Talk to the bot on Telegram — your c
   "volumeMountPath": "/home/node/.openclaw",
   "healthCheckPath": null,
   "env": {
+    "OPENROUTER_API_KEY": "YOUR_OPENROUTER_API_KEY",
+    "OPENAI_API_KEY": "YOUR_OPENAI_API_KEY",
     "ANTHROPIC_API_KEY": "YOUR_ANTHROPIC_API_KEY",
+    "GEMINI_API_KEY": "YOUR_GEMINI_API_KEY",
     "TELEGRAM_BOT_TOKEN": "YOUR_TELEGRAM_BOT_TOKEN",
     "OPENCLAW_GATEWAY_TOKEN": "YOUR_GATEWAY_TOKEN"
   },
@@ -123,7 +149,10 @@ Open the link above to manage your agent. Talk to the bot on Telegram — your c
                 "command": ["node", "dist/index.js"],
                 "args": ["gateway", "--allow-unconfigured", "--bind", "lan", "--port", "18789"],
                 "env": {
+                  "OPENROUTER_API_KEY": "YOUR_OPENROUTER_API_KEY",
+                  "OPENAI_API_KEY": "YOUR_OPENAI_API_KEY",
                   "ANTHROPIC_API_KEY": "YOUR_ANTHROPIC_API_KEY",
+                  "GEMINI_API_KEY": "YOUR_GEMINI_API_KEY",
                   "TELEGRAM_BOT_TOKEN": "YOUR_TELEGRAM_BOT_TOKEN",
                   "OPENCLAW_GATEWAY_TOKEN": "YOUR_GATEWAY_TOKEN"
                 }
