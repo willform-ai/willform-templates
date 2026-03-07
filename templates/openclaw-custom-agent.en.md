@@ -24,33 +24,13 @@ Replace the placeholder values below with your own.
 | `YOUR_TELEGRAM_BOT_TOKEN` | Send `/newbot` to [@BotFather](https://t.me/BotFather). [Docs](https://core.telegram.org/bots#how-do-i-create-a-bot) | Connects the bot to Telegram | `110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw` |
 | `YOUR_TELEGRAM_USER_ID` | Send any message to [@userinfobot](https://t.me/userinfobot) and copy the numeric ID | Adds you to the DM allowlist | `1234567890` |
 | `YOUR_GATEWAY_TOKEN` | Choose any password you like — this is your own secret | Authenticates access to the web Control UI | `my-secret-123` |
+| `YOUR_OPENROUTER_API_KEY` | Create at [OpenRouter](https://openrouter.ai/keys). Add credits at [Credits](https://openrouter.ai/credits). | LLM inference — 200+ models. Only one key needed; if multiple are set, priority: Anthropic > OpenAI > OpenRouter > Gemini. Leave blank if not using. | `sk-or-v1-...` |
+| `YOUR_OPENAI_API_KEY` | Create at [OpenAI Platform](https://platform.openai.com/api-keys). Add credits at [Billing](https://platform.openai.com/settings/organization/billing). | LLM inference — OpenAI models. Only one key needed; if multiple are set, priority: Anthropic > OpenAI > OpenRouter > Gemini. Leave blank if not using. | `sk-proj-...` |
+| `YOUR_ANTHROPIC_API_KEY` | Create at [Anthropic Console](https://console.anthropic.com/settings/keys). Add credits at [Billing](https://console.anthropic.com/settings/billing). | LLM inference — Claude models. Only one key needed; if multiple are set, priority: Anthropic > OpenAI > OpenRouter > Gemini. Leave blank if not using. | `sk-ant-api03-...` |
+| `YOUR_GEMINI_API_KEY` | Create at [Google AI Studio](https://aistudio.google.com/apikey). | LLM inference — Gemini models. Only one key needed; if multiple are set, priority: Anthropic > OpenAI > OpenRouter > Gemini. Leave blank if not using. | `AIza...` |
 | `YOUR_IDENTITY_MD` | Write your own (see guide below) | Defines the agent's name, emoji, and role | `# Identity\nName: Atlas\nCreature: AI travel planner...\nVibe: Friendly...\nEmoji: 🌍` |
 | `YOUR_SOUL_MD` | Write your own (see guide below) | Defines the agent's personality, expertise, and tone | `# Soul\n## Core Truths\n- Data-driven decisions only...\n## Boundaries\n- Never book on behalf...\n## Vibe\n...` |
 | `YOUR_AGENTS_MD` | Write your own (see guide below) | Defines the agent's behavior rules and constraints | `# Agents\n## Session Startup\n1. Read SOUL.md...\n## Memory Management\n- Log to memory/...\n## Framework\n...` |
-
-### Provider: OpenRouter (default)
-
-| Variable | How to get it | Purpose | Example |
-|---|---|---|---|
-| `YOUR_OPENROUTER_API_KEY` | Create at [OpenRouter](https://openrouter.ai/keys). Add credits at [Credits](https://openrouter.ai/credits). | LLM inference — 200+ models | `sk-or-v1-...` |
-
-### Provider: Anthropic
-
-| Variable | How to get it | Purpose | Example |
-|---|---|---|---|
-| `YOUR_ANTHROPIC_API_KEY` | Create at [Anthropic Console](https://console.anthropic.com/settings/keys). Add credits at [Billing](https://console.anthropic.com/settings/billing). | LLM inference — Claude models | `sk-ant-api03-...` |
-
-### Provider: OpenAI
-
-| Variable | How to get it | Purpose | Example |
-|---|---|---|---|
-| `YOUR_OPENAI_API_KEY` | Create at [OpenAI Platform](https://platform.openai.com/api-keys). Add credits at [Billing](https://platform.openai.com/settings/organization/billing). | LLM inference — OpenAI models | `sk-proj-...` |
-
-### Provider: Google Gemini
-
-| Variable | How to get it | Purpose | Example |
-|---|---|---|---|
-| `YOUR_GEMINI_API_KEY` | Create at [Google AI Studio](https://aistudio.google.com/apikey). | LLM inference — Gemini models | `AIza...` |
 
 ### How to write IDENTITY.md
 

@@ -24,30 +24,10 @@ tags: [openclaw, telegram, ai, finance]
 | `YOUR_TELEGRAM_BOT_TOKEN` | [@BotFather](https://t.me/BotFather)에게 `/newbot` 전송. [가이드](https://core.telegram.org/bots#how-do-i-create-a-bot) | 텔레그램 봇 연결 | `110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw` |
 | `YOUR_TELEGRAM_USER_ID` | [@userinfobot](https://t.me/userinfobot)에게 아무 메시지 전송 → 숫자 ID 복사 | DM 허용 목록에 본인 등록 | `1234567890` |
 | `YOUR_GATEWAY_TOKEN` | 원하는 비밀번호를 직접 정합니다 | 웹 Control UI 접속 인증 | `my-secret-123` |
-
-### Provider: OpenRouter (default)
-
-| 변수 | 발급 방법 | 용도 | 예시 |
-|---|---|---|---|
-| `YOUR_OPENROUTER_API_KEY` | [OpenRouter](https://openrouter.ai/keys)에서 생성. [Credits](https://openrouter.ai/credits)에서 크레딧 충전. | LLM 추론 — 200+ 모델 | `sk-or-v1-...` |
-
-### Provider: Anthropic
-
-| 변수 | 발급 방법 | 용도 | 예시 |
-|---|---|---|---|
-| `YOUR_ANTHROPIC_API_KEY` | [Anthropic Console](https://console.anthropic.com/settings/keys)에서 생성. [Billing](https://console.anthropic.com/settings/billing)에서 크레딧 충전. | LLM 추론 — Claude 모델 | `sk-ant-api03-...` |
-
-### Provider: OpenAI
-
-| 변수 | 발급 방법 | 용도 | 예시 |
-|---|---|---|---|
-| `YOUR_OPENAI_API_KEY` | [OpenAI Platform](https://platform.openai.com/api-keys)에서 생성. [Billing](https://platform.openai.com/settings/organization/billing)에서 크레딧 충전. | LLM 추론 — OpenAI 모델 | `sk-proj-...` |
-
-### Provider: Google Gemini
-
-| 변수 | 발급 방법 | 용도 | 예시 |
-|---|---|---|---|
-| `YOUR_GEMINI_API_KEY` | [Google AI Studio](https://aistudio.google.com/apikey)에서 생성. | LLM 추론 — Gemini 모델 | `AIza...` |
+| `YOUR_OPENROUTER_API_KEY` | [OpenRouter](https://openrouter.ai/keys)에서 생성. [Credits](https://openrouter.ai/credits)에서 크레딧 충전. | LLM 추론 — 200+ 모델. 키는 하나만 필요합니다. 여러 개 입력 시 Anthropic > OpenAI > OpenRouter > Gemini 순으로 선택. 미사용 시 비워 두세요. | `sk-or-v1-...` |
+| `YOUR_OPENAI_API_KEY` | [OpenAI Platform](https://platform.openai.com/api-keys)에서 생성. [Billing](https://platform.openai.com/settings/organization/billing)에서 크레딧 충전. | LLM 추론 — OpenAI 모델. 키는 하나만 필요합니다. 여러 개 입력 시 Anthropic > OpenAI > OpenRouter > Gemini 순으로 선택. 미사용 시 비워 두세요. | `sk-proj-...` |
+| `YOUR_ANTHROPIC_API_KEY` | [Anthropic Console](https://console.anthropic.com/settings/keys)에서 생성. [Billing](https://console.anthropic.com/settings/billing)에서 크레딧 충전. | LLM 추론 — Claude 모델. 키는 하나만 필요합니다. 여러 개 입력 시 Anthropic > OpenAI > OpenRouter > Gemini 순으로 선택. 미사용 시 비워 두세요. | `sk-ant-api03-...` |
+| `YOUR_GEMINI_API_KEY` | [Google AI Studio](https://aistudio.google.com/apikey)에서 생성. | LLM 추론 — Gemini 모델. 키는 하나만 필요합니다. 여러 개 입력 시 Anthropic > OpenAI > OpenRouter > Gemini 순으로 선택. 미사용 시 비워 두세요. | `AIza...` |
 
 ## 배포 후 안내
 
