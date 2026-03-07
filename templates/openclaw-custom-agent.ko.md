@@ -32,7 +32,7 @@ tags: [openclaw, telegram, ai, custom]
 | `YOUR_SOUL_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 성격, 전문성, 말투 정의 | `## Core Truths\n## Boundaries\n## Vibe\n## Continuity` |
 | `YOUR_AGENTS_MD` | 직접 작성 (아래 가이드 참조) | 에이전트의 행동 규칙과 제약 조건 정의 | `## 세션 시작 루틴\n## 메모리 관리\n## 분석 프레임워크` |
 
-> API 키는 하나만 있으면 됩니다. 사용할 Provider를 선택하고 나머지는 비워 두세요.
+> API 키는 하나만 있으면 됩니다. 사용할 Provider를 선택하고 나머지는 비워 두세요. 여러 개 입력 시 Anthropic > OpenAI > OpenRouter > Gemini 순으로 기본 선택됩니다.
 
 ### IDENTITY.md 작성 가이드
 

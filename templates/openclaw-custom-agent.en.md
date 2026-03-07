@@ -32,7 +32,7 @@ Replace the placeholder values below with your own.
 | `YOUR_SOUL_MD` | Write your own (see guide below) | Defines the agent's personality, expertise, and tone | `## Core Truths\n## Boundaries\n## Vibe\n## Continuity` |
 | `YOUR_AGENTS_MD` | Write your own (see guide below) | Defines the agent's behavior rules and constraints | `## Session Startup\n## Memory Management\n## Analysis Framework` |
 
-> Only one API key is required. Choose the provider you want to use and leave the rest blank.
+> Only one API key is required. Choose the provider you want to use and leave the rest blank. If multiple keys are provided, OpenClaw picks the default in this order: Anthropic > OpenAI > OpenRouter > Gemini.
 
 ### How to write IDENTITY.md
 
