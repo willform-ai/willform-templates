@@ -17,6 +17,7 @@ Copy a prompt, paste it into your AI agent, and deploy infrastructure in seconds
 | Template | Description | Languages |
 |----------|-------------|-----------|
 | [OpenClaw Investment Researcher](./templates/openclaw-investment-researcher.en.md) | AI chatbot on Telegram for stocks, ETFs, crypto, and market analysis | [English](./templates/openclaw-investment-researcher.en.md) · [한국어](./templates/openclaw-investment-researcher.ko.md) |
+| [OpenClaw Coding Developer](./templates/openclaw-coding-developer.en.md) | AI coding assistant for code review, debugging, and architecture | [English](./templates/openclaw-coding-developer.en.md) · [한국어](./templates/openclaw-coding-developer.ko.md) |
 | [OpenClaw Custom Agent](./templates/openclaw-custom-agent.en.md) | Deploy a custom OpenClaw agent with your own configuration | [English](./templates/openclaw-custom-agent.en.md) · [한국어](./templates/openclaw-custom-agent.ko.md) |
 
 ## Creating a Template
@@ -68,6 +69,10 @@ Post-deploy sections support automatic variable substitution:
 - `$INTERNAL_ENDPOINT` — cluster-internal endpoint
 - `$STATUS` — deployment status
 - Any prerequisite variable (e.g., `YOUR_API_KEY`)
+
+## Guides
+
+- [Connect Willform MCP to OpenClaw](./docs/openclaw-mcp-setup.md) — Give your OpenClaw agent access to 42 Willform deployment tools via MCP
 
 ## Contributing
 
