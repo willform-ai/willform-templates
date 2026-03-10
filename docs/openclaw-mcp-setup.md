@@ -1,25 +1,17 @@
-# Connect Willform MCP to OpenClaw
+# Connect Your AI Coding Agent to Willform MCP
 
-Give your OpenClaw agent access to Willform's 42 MCP tools — deploy containers, manage domains, check billing, and more — all from Telegram.
+Deploy containers, manage domains, check billing — 42 MCP tools, directly from your IDE or CLI agent.
 
 ## Overview
 
-- **Willform MCP** uses Streamable HTTP transport (`https://agent.willform.ai/api/mcp`)
-- **OpenClaw** natively supports stdio-based MCP servers only
-- **Solution**: Use `mcp-proxy` to bridge Streamable HTTP to stdio
-
-```
-OpenClaw Agent  ──stdio──>  mcp-proxy  ──streamable-http──>  Willform MCP
-(in K8s pod)                (child process)                  (agent.willform.ai)
-```
+Willform exposes a Streamable HTTP MCP server at `https://agent.willform.ai/api/mcp`. All major AI coding agents can connect to it natively.
 
 ## Prerequisites
 
 | Item | How to get it |
 |------|---------------|
 | Willform API Key | Dashboard > Settings > API Keys (starts with `wf_sk_`) |
-| OpenClaw instance | Deploy via any OpenClaw template on Willform |
-| Node.js 18+ | Included in OpenClaw image (`alpine/openclaw`) |
+| AI coding agent | Any of: Claude Code, Cursor, Windsurf, GitHub Copilot, Cline, Continue.dev |
 
 ## Step 1: Get Your API Key
 
@@ -28,92 +20,141 @@ OpenClaw Agent  ──stdio──>  mcp-proxy  ──streamable-http──>  Wil
 3. Navigate to **Settings > API Keys**
 4. Create a new key — copy the `wf_sk_...` value (shown only once)
 
-## Step 2: Install mcp-proxy in OpenClaw
+## Step 2: Connect Your Agent
 
-Open the OpenClaw Control UI and run in the sandbox terminal:
+### Claude Code (CLI)
 
 ```bash
-npm install -g mcp-proxy
+claude mcp add --transport http --header "Authorization: Bearer wf_sk_YOUR_KEY" willform https://agent.willform.ai/api/mcp
 ```
 
-> Note: This persists in the volume at `/home/node/.openclaw/`. Survives pod restarts.
+Or add to `.mcp.json` in your project:
 
-## Step 3: Configure openclaw.json
-
-Open the Control UI, navigate to Settings, and add the `mcpServers` section:
-
-```json5
-{
-  // ... existing gateway, channels config ...
-
-  "mcpServers": {
-    "willform": {
-      "command": "mcp-proxy",
-      "args": [
-        "--transport", "streamablehttp",
-        "--headers", "Authorization", "Bearer YOUR_WILLFORM_API_KEY",
-        "https://agent.willform.ai/api/mcp"
-      ]
-    }
-  }
-}
-```
-
-Replace `YOUR_WILLFORM_API_KEY` with your actual `wf_sk_...` key.
-
-### Using environment variables (recommended)
-
-To avoid hardcoding the API key in config:
-
-```json5
+```json
 {
   "mcpServers": {
     "willform": {
-      "command": "mcp-proxy",
-      "args": [
-        "--transport", "streamablehttp",
-        "--headers", "Authorization", "Bearer ${WILLFORM_API_KEY}",
-        "https://agent.willform.ai/api/mcp"
-      ],
-      "env": {
-        "WILLFORM_API_KEY": "wf_sk_..."
+      "type": "http",
+      "url": "https://agent.willform.ai/api/mcp",
+      "headers": {
+        "Authorization": "Bearer wf_sk_YOUR_KEY"
       }
     }
   }
 }
 ```
 
-## Step 4: Restart Gateway
+### Cursor
 
-After saving the config, restart the OpenClaw gateway for changes to take effect:
+Create `.cursor/mcp.json` in your project:
 
-```bash
-openclaw gateway restart
+```json
+{
+  "mcpServers": {
+    "willform": {
+      "url": "https://agent.willform.ai/api/mcp",
+      "transport": "streamable-http",
+      "headers": {
+        "Authorization": "Bearer wf_sk_YOUR_KEY"
+      }
+    }
+  }
+}
 ```
 
-Or from the Control UI: **Settings > Restart Gateway**.
+### Windsurf (Codeium)
 
-## Step 5: Verify
+Edit `~/.codeium/windsurf/mcp_config.json`:
 
-Talk to your OpenClaw bot on Telegram:
+```json
+{
+  "mcpServers": {
+    "willform": {
+      "serverUrl": "https://agent.willform.ai/api/mcp",
+      "headers": {
+        "Authorization": "Bearer wf_sk_YOUR_KEY"
+      }
+    }
+  }
+}
+```
+
+Note: Windsurf uses `serverUrl` (not `url`).
+
+### GitHub Copilot (VS Code)
+
+Add to VS Code `settings.json`:
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "willform": {
+        "type": "http",
+        "url": "https://agent.willform.ai/api/mcp",
+        "headers": {
+          "Authorization": "Bearer wf_sk_YOUR_KEY"
+        }
+      }
+    }
+  }
+}
+```
+
+### Cline (VS Code extension)
+
+Edit `cline_mcp_settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "willform": {
+      "url": "https://agent.willform.ai/api/mcp",
+      "type": "streamableHttp",
+      "headers": {
+        "Authorization": "Bearer wf_sk_YOUR_KEY"
+      },
+      "disabled": false
+    }
+  }
+}
+```
+
+Note: Cline uses `streamableHttp` (camelCase).
+
+### Continue.dev
+
+Add to `config.yaml`:
+
+```yaml
+mcpServers:
+  - name: willform
+    type: streamable-http
+    url: https://agent.willform.ai/api/mcp
+    headers:
+      Authorization: "Bearer wf_sk_YOUR_KEY"
+```
+
+## Step 3: Verify
+
+Ask your agent:
 
 ```
-List my namespaces
+List my Willform namespaces
 ```
 
-The agent should call the `namespace_list` Willform MCP tool and return your namespaces.
+The agent should call `namespace_list` and return your namespaces.
 
-Try more commands:
+Try more:
 
 ```
-Deploy a Redis cache called my-redis
+Deploy nginx:alpine as a web service on port 80
 Show my credit balance
 What deployments are running?
+Create a PostgreSQL database called my-db
 ```
 
 ## Available Tools (42 total)
-
-Once connected, your OpenClaw agent has access to all Willform MCP tools:
 
 | Category | Tools |
 |----------|-------|
@@ -127,55 +168,38 @@ Once connected, your OpenClaw agent has access to all Willform MCP tools:
 | **Preflight** | `deploy_preflight` |
 | **Account** | `account_info`, `api_key_list`, `api_key_create`, `api_key_revoke` |
 
-## Template Configuration
+## OpenClaw Limitation
 
-To include Willform MCP in a template's `openclaw.json`, add the `mcpServers` block to the config string in `chartValues.upstream.app-template.configMaps.config.data["openclaw.json"]`.
-
-Since the config is a JSON string inside `Deploy Config`, escape it properly:
-
-```
-\"mcpServers\": { \"willform\": { \"command\": \"mcp-proxy\", \"args\": [\"--transport\", \"streamablehttp\", \"--headers\", \"Authorization\", \"Bearer YOUR_WILLFORM_API_KEY\", \"https://agent.willform.ai/api/mcp\"] } }
-```
-
-And add a prerequisite variable:
-
-```markdown
-| `YOUR_WILLFORM_API_KEY` | Dashboard > Settings > [API Keys](https://agent.willform.ai/dashboard) | Authenticates MCP tool calls to Willform | `wf_sk_...` |
-```
+OpenClaw (as of v2026.3.8) does **not** support MCP client connections. The `mcpServers` config key is rejected by all versions. OpenClaw is a chatbot gateway (Telegram/Discord/Slack), not a coding IDE — it uses REST API via curl commands instead. See the `openclaw-willform-deploy` E2E scenario for the curl-based approach.
 
 ## Troubleshooting
 
-### "mcp-proxy: command not found"
+### 401 Unauthorized
 
-Install it globally in the OpenClaw container:
-
-```bash
-npm install -g mcp-proxy
-```
-
-If npm global bin is not in PATH:
-
-```bash
-export PATH="$PATH:$(npm config get prefix)/bin"
-```
+- Check that your API key starts with `wf_sk_`
+- API keys are SHA-256 hashed in DB — if expired, create a new one
 
 ### Connection timeout
 
-- Verify your API key is valid: `curl -H "Authorization: Bearer wf_sk_..." https://agent.willform.ai/api/mcp` should return a response (not 401)
-- Check if the pod has outbound internet access (NetworkPolicy)
-
-### Tools not appearing
-
-- Restart the gateway after config changes
-- Check gateway logs for MCP connection errors: `openclaw gateway logs`
-- Verify JSON5 syntax with `openclaw doctor`
+- Verify endpoint: `curl -H "Authorization: Bearer wf_sk_..." https://agent.willform.ai/api/mcp`
+- Ensure your network allows HTTPS outbound
 
 ### Rate limiting (429)
 
-Willform MCP has a per-user rate limit of 120 requests/minute. If your agent is making too many calls, add delays between operations.
+120 requests/minute per user. Add delays between rapid operations.
+
+### transport type mismatch
+
+Each agent uses a different type field name:
+
+| Agent | Type value |
+|-------|-----------|
+| Claude Code / Copilot | `http` |
+| Cursor / Continue.dev | `streamable-http` |
+| Cline | `streamableHttp` |
+| Windsurf | (uses `serverUrl` instead of `url`) |
 
 ## References
 
 - [Willform MCP Docs](https://agent.willform.ai/docs/mcp-setup)
-- [mcp-proxy GitHub](https://github.com/sparfenyuk/mcp-proxy)
-- [OpenClaw MCP Issue #8188](https://github.com/openclaw/openclaw/issues/8188) — native HTTP MCP support (pending)
+- [MCP Transports Spec](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports)
