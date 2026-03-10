@@ -45,7 +45,7 @@ tags: [terminal, claude-code, codex, gemini, ai, browser]
 {
   "name": "terminal",
   "chartType": "web",
-  "image": "registry.willform.ai/library/web-terminal:latest",
+  "image": "ghcr.io/willform-ai/web-terminal:latest",
   "port": 7681,
   "replicas": 1,
   "env": {
