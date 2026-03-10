@@ -45,7 +45,7 @@ Type `help-tools` for a quick reference of all available AI tools and commands.
 {
   "name": "terminal",
   "chartType": "web",
-  "image": "ghcr.io/willform-ai/web-terminal:latest",
+  "image": "registry.willform.ai/library/web-terminal:latest",
   "port": 7681,
   "replicas": 1,
   "env": {
