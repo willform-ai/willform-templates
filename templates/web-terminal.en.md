@@ -1,18 +1,19 @@
 ---
 category: dev-tool
-tags: [terminal, claude-code, codex, gemini, ai, browser]
+tags: [terminal, claude-code, codex, gemini, ai, browser, vibe-coding]
 ---
 
-# Web Terminal — AI Coding Tools in Your Browser
+# AI Terminal Browser — AI Coding for Everyone
 
-A browser-based Linux terminal with Claude Code, Codex, and Gemini CLI pre-installed. No local setup needed — just deploy and start coding with AI.
+A browser-based AI terminal with Claude Code, Codex, and Gemini CLI pre-installed. No local setup needed — just describe what you want to build and the AI creates it. See results instantly at `/preview/`.
 
 ## What You Get
 
 - A full Linux terminal (Ubuntu 24.04) accessible from any web browser
 - Claude Code, Codex, and Gemini CLI pre-installed and ready to use
+- Vibe coding live preview — see AI-built results instantly at `/preview/`
 - Pretty shell (Oh My Zsh + Powerlevel10k) with autosuggestions and syntax highlighting
-- Willform plugin with 16 slash commands for cloud deployment
+- Willform plugin and AIATOR tutorial built-in
 - MCP server pre-configured for both Claude Code and Codex
 - Basic auth protection via username/password
 - Developer tools: git, gh, python3, ripgrep, fzf, tmux, htop, and more
@@ -30,12 +31,15 @@ Replace the placeholder values below with your own.
 ## Post-Deploy
 
 **Terminal**: https://$DOMAIN
+**Live Preview**: https://$DOMAIN/preview/
 
 Open the link above and log in with the username and password you set. Once inside:
 
 1. **Claude Code**: Run `claude auth login` → follow the browser link → sign in to Anthropic → then use `cc` to start coding
 2. **Codex**: Run `codex login` → follow the browser link → sign in to OpenAI → then use `codex` to start
 3. **Gemini**: Run `gemini` → it will auto-prompt login on first run → follow the browser link → sign in to Google
+
+**Vibe Coding**: Tell the AI "create a website on port 3000" and see the result instantly at `/preview/`.
 
 Type `help-tools` for a quick reference of all available AI tools and commands.
 

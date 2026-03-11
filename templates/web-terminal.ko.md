@@ -1,18 +1,19 @@
 ---
 category: dev-tool
-tags: [terminal, claude-code, codex, gemini, ai, browser]
+tags: [terminal, claude-code, codex, gemini, ai, browser, vibe-coding]
 ---
 
-# 웹 터미널 — 브라우저에서 AI 코딩 도구 사용하기
+# AI 터미널 브라우저 — 비개발자를 위한 AI 코딩 환경
 
-브라우저에서 바로 사용하는 리눅스 터미널입니다. Claude Code, Codex, Gemini CLI가 미리 설치되어 있어 별도 설정 없이 바로 AI와 코딩할 수 있습니다.
+브라우저에서 바로 사용하는 AI 터미널입니다. Claude Code, Codex, Gemini CLI가 미리 설치되어 있어 별도 설정 없이 AI에게 말로 설명하면 웹사이트나 앱을 만들 수 있습니다. 만든 결과물은 `/preview/` 경로에서 바로 확인할 수 있습니다.
 
 ## 배포 결과
 
 - 웹 브라우저에서 접속 가능한 리눅스 터미널 (Ubuntu 24.04)
 - Claude Code, Codex, Gemini CLI가 미리 설치되어 바로 사용 가능
+- 바이브코딩 라이브 프리뷰 — AI가 만든 결과물을 `/preview/` 경로에서 즉시 확인
 - 예쁜 쉘 환경 (Oh My Zsh + Powerlevel10k) — 자동완성, 구문 강조 포함
-- Willform 플러그인 (16개 슬래시 명령어)으로 클라우드 배포
+- Willform 플러그인과 AIATOR 튜토리얼 내장
 - Claude Code와 Codex 모두에 MCP 서버 자동 연결
 - 사용자명/비밀번호 기본 인증으로 보호
 - 개발 도구 포함: git, gh, python3, ripgrep, fzf, tmux, htop 등
@@ -30,12 +31,15 @@ tags: [terminal, claude-code, codex, gemini, ai, browser]
 ## 배포 후 안내
 
 **터미널**: https://$DOMAIN
+**라이브 프리뷰**: https://$DOMAIN/preview/
 
 위 링크를 열고 설정한 사용자명과 비밀번호로 로그인하세요. 접속 후:
 
 1. **Claude Code**: `claude auth login` 실행 → 브라우저 링크 따라가기 → Anthropic 로그인 → `cc`로 코딩 시작
 2. **Codex**: `codex login` 실행 → 브라우저 링크 따라가기 → OpenAI 로그인 → `codex`로 시작
 3. **Gemini**: `gemini` 실행 → 첫 실행 시 자동으로 로그인 안내 → 브라우저 링크 따라가기 → Google 로그인
+
+**바이브코딩 사용법**: AI에게 "포트 3000번으로 웹사이트 만들어줘"라고 하면, 만든 결과를 `/preview/` 경로에서 바로 볼 수 있습니다.
 
 `help-tools`를 입력하면 사용 가능한 AI 도구와 명령어를 한눈에 볼 수 있습니다.
 
