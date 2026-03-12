@@ -31,17 +31,18 @@ Replace the placeholder values below with your own.
 ## Post-Deploy
 
 **Terminal**: https://$DOMAIN
+
 **Live Preview**: https://$DOMAIN/preview/
 
 Open the link above and log in with the username and password you set. Once inside:
 
-1. **Claude Code**: Run `claude auth login` → follow the browser link → sign in to Anthropic → then use `cc` to start coding
-2. **Codex**: Run `codex login` → follow the browser link → sign in to OpenAI → then use `codex` to start
-3. **Gemini**: Run `gemini` → it will auto-prompt login on first run → follow the browser link → sign in to Google
+1. **Claude Code**: Type `claude` → follow the login prompt → tell AI what you want
+2. **Codex**: Type `codex` → follow the login prompt → tell AI what you want
+3. **Gemini**: Type `gemini` → follow the login prompt → tell AI what you want
 
 **Vibe Coding**: Tell the AI "create a website on port 3000" and see the result instantly at `/preview/`.
 
-Type `help-tools` for a quick reference of all available AI tools and commands.
+Type `help-tools` for a list of available commands.
 
 ## Deploy Config
 

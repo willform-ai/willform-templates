@@ -31,17 +31,18 @@ tags: [terminal, claude-code, codex, gemini, ai, browser, vibe-coding]
 ## 배포 후 안내
 
 **터미널**: https://$DOMAIN
+
 **라이브 프리뷰**: https://$DOMAIN/preview/
 
 위 링크를 열고 설정한 사용자명과 비밀번호로 로그인하세요. 접속 후:
 
-1. **Claude Code**: `claude auth login` 실행 → 브라우저 링크 따라가기 → Anthropic 로그인 → `cc`로 코딩 시작
-2. **Codex**: `codex login` 실행 → 브라우저 링크 따라가기 → OpenAI 로그인 → `codex`로 시작
-3. **Gemini**: `gemini` 실행 → 첫 실행 시 자동으로 로그인 안내 → 브라우저 링크 따라가기 → Google 로그인
+1. **Claude Code**: `claude` 입력 → 안내에 따라 로그인 → AI에게 원하는 걸 말하면 끝
+2. **Codex**: `codex` 입력 → 안내에 따라 로그인 → AI에게 원하는 걸 말하면 끝
+3. **Gemini**: `gemini` 입력 → 안내에 따라 로그인 → AI에게 원하는 걸 말하면 끝
 
-**바이브코딩 사용법**: AI에게 "포트 3000번으로 웹사이트 만들어줘"라고 하면, 만든 결과를 `/preview/` 경로에서 바로 볼 수 있습니다.
+**바이브코딩**: AI에게 "포트 3000번으로 웹사이트 만들어줘"라고 하면, 만든 결과를 `/preview/` 경로에서 바로 볼 수 있습니다.
 
-`help-tools`를 입력하면 사용 가능한 AI 도구와 명령어를 한눈에 볼 수 있습니다.
+`help-tools`를 입력하면 사용 가능한 명령어를 볼 수 있습니다.
 
 ## Deploy Config
 
