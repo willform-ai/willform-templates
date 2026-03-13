@@ -50,7 +50,7 @@ Type `help-tools` for a list of available commands.
 {
   "name": "terminal",
   "chartType": "web",
-  "image": "registry.willform.ai/library/web-terminal:latest",
+  "image": "registry.willform.ai/library/web-terminal:en",
   "port": 7681,
   "replicas": 1,
   "env": {
