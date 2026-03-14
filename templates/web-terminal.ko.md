@@ -26,7 +26,7 @@ tags: [terminal, claude-code, codex, gemini, ai, browser, vibe-coding]
 |---|---|---|---|
 | `YOUR_TERMINAL_USER` | 원하는 사용자명을 직접 정합니다 | 터미널 로그인 사용자명 | `admin` |
 | `YOUR_TERMINAL_PASSWORD` | 안전한 비밀번호를 직접 정합니다 | 터미널 로그인 비밀번호 | `my-secret-pw` |
-| `YOUR_WILLFORM_API_KEY` | [agent.willform.ai](https://agent.willform.ai) > Settings > API Keys에서 발급. | (선택 사항) Claude Code와 Codex에서 Willform MCP 도구를 사용합니다. 미사용 시 비워 두세요. | `wf_sk_...` |
+| `YOUR_WILLFORM_API_KEY` | [agent.willform.ai](https://agent.willform.ai) > Settings > API Keys에서 발급. 페이지 우측 자동 생성 버튼으로도 발급 가능. | Claude Code와 Codex에서 Willform MCP 도구를 사용합니다. | `wf_sk_...` |
 
 ## 배포 후 안내
 

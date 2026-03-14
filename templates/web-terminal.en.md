@@ -26,7 +26,7 @@ Replace the placeholder values below with your own.
 |---|---|---|---|
 | `YOUR_TERMINAL_USER` | Choose any username | Terminal login username | `admin` |
 | `YOUR_TERMINAL_PASSWORD` | Choose a strong password | Terminal login password | `my-secret-pw` |
-| `YOUR_WILLFORM_API_KEY` | Dashboard > Settings > API Keys at [agent.willform.ai](https://agent.willform.ai). | (Optional) Enables Willform MCP tools inside Claude Code and Codex. Leave blank if not using. | `wf_sk_...` |
+| `YOUR_WILLFORM_API_KEY` | Dashboard > Settings > API Keys at [agent.willform.ai](https://agent.willform.ai). Or use the auto-generate button on this page. | Enables Willform MCP tools inside Claude Code and Codex. | `wf_sk_...` |
 
 ## Post-Deploy
 
