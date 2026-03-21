@@ -49,7 +49,7 @@ tools = await mcp_client.get_tools()
 {
   "name": "langgraph",
   "chartType": "worker",
-  "image": "willformhq/langgraph-starter:latest",
+  "image": "python:3.12-slim",
   "replicas": 1,
   "volumeSizeGb": 4,
   "volumeMountPath": "/app/data",
