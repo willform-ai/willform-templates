@@ -45,7 +45,7 @@ agent = AssistantAgent("assistant", tools=toolkit.tools)
 {
   "name": "autogen",
   "chartType": "worker",
-  "image": "willformhq/autogen-starter:latest",
+  "image": "python:3.12-slim",
   "replicas": 1,
   "volumeSizeGb": 4,
   "volumeMountPath": "/app/data",

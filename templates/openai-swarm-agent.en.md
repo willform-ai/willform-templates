@@ -52,7 +52,7 @@ response = client.run(agent=agent, messages=[{"role": "user", "content": "Deploy
 {
   "name": "swarm",
   "chartType": "worker",
-  "image": "willformhq/openai-swarm-starter:latest",
+  "image": "python:3.12-slim",
   "replicas": 1,
   "volumeSizeGb": 2,
   "volumeMountPath": "/app/data",

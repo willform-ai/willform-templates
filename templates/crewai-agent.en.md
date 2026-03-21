@@ -47,7 +47,7 @@ mcp_tools = MCPServerAdapter({"url": os.environ["MCP_ENDPOINT"]})
 {
   "name": "crewai",
   "chartType": "worker",
-  "image": "willformhq/crewai-starter:latest",
+  "image": "python:3.12-slim",
   "replicas": 1,
   "volumeSizeGb": 4,
   "volumeMountPath": "/app/data",
